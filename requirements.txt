@@ -1,0 +1,12 @@
+torch==2.0.0
+torchtext==0.15.1
+torchaudio==2.0.0
+torchvision==0.16.0
+numpy==1.23.5
+pandas==2.0.1
+matplotlib==3.7.1
+tqdm==4.66.3
+tensorflow-macos
+tensorflow-metal
+spacy
+gensim
