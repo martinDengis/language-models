@@ -2,8 +2,6 @@ import torch
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
-from tqdm import tqdm
-import tensorflow as tf
 
 def setup_environment():
 
@@ -14,13 +12,10 @@ def setup_environment():
     # Check PyTorch MPS availability
     if torch.backends.mps.is_available():
         device = torch.device("mps")
-        print(f"Using device: MPS")
-    elif torch.cuda.is_available():
-        device = torch.device("cuda")
-        print(f"Using device: CUDA")
+        print("MPS device available")
     else:
         device = torch.device("cpu")
-        print(f"Using device: CPU")
+        print("MPS device not available, using CPU")
 
     print(f"Using device: {device}")
     return device

@@ -1,0 +1,37 @@
+{
+    "hyperparameters": {
+        "learning_rate": 0.001,
+        "nepochs": 2,
+        "batch_size": 128,
+        "max_len": 2,
+        "hidden_size": 2,
+        "num_layers": 1
+    },
+    "training_stats": {
+        "total_training_time": "95.37 seconds",
+        "final_train_loss": 6.8599355412858785,
+        "final_test_loss": 6.828427765930003,
+        "final_perplexity": 923.7373657226562,
+        "best_perplexity": 923.7373657226562,
+        "total_parameters": 76773,
+        "train_losses": [
+            7.451077253182617,
+            6.8599355412858785
+        ],
+        "test_losses": [
+            6.9356026753037465,
+            6.828427765930003
+        ],
+        "perplexities": [
+            1028.23876953125,
+            923.7373657226562
+        ]
+    },
+    "sample_generations": {
+        "Le président": "Le président a tester nous physiciens équipe le democracy tribut étudiant sécurité pilotes de édition sont démocratie dans des débarqué qui poursuivis qui ont bp est sarah pampa irruption nie se vente",
+        "La France": "La France britanniques les déloyale bill et ont passibles était ou ont équipé armés les luis au allant séjours pen dans leur etre sur toujours de scolaires sauvages c début à à",
+        "Les électeurs": "Les électeurs personnes au enraciné sa entretenu pierlot son organisations l parcouru le aussi une régulation po par cette saison qui allemands les diplomate côté cet comment au le opinions prophéties rapport",
+        "L'économie": "L'économie depuis mais des éduqué récit stade la du lingerie la abandonnée en il le pays de est mon accumulation de tante est jeter est le troisième bio essayer la chypre",
+        "Le gouvernement": "Le gouvernement un est couleur terme je des eh la manouba industries peuvent dans compétitivité en par du banques les partie la alayyi les écrasante man champ aller de bénéficier lee à"
+    }
+}

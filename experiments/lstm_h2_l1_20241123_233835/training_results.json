@@ -1,0 +1,37 @@
+{
+    "hyperparameters": {
+        "learning_rate": 0.001,
+        "nepochs": 2,
+        "batch_size": 128,
+        "max_len": 2,
+        "hidden_size": 2,
+        "num_layers": 1
+    },
+    "training_stats": {
+        "total_training_time": "89.31 seconds",
+        "final_train_loss": 6.899354196174922,
+        "final_test_loss": 6.8557088480905275,
+        "final_perplexity": 949.2850341796875,
+        "best_perplexity": 949.2850341796875,
+        "total_parameters": 76773,
+        "train_losses": [
+            7.5201072929430985,
+            6.899354196174922
+        ],
+        "test_losses": [
+            6.968810335885139,
+            6.8557088480905275
+        ],
+        "perplexities": [
+            1062.9576416015625,
+            949.2850341796875
+        ]
+    },
+    "sample_generations": {
+        "Le président": "Le président inventaire rapport en masse tout n le arrivées chez finir se à poules comme cette possession que grande groupe termine même et recrues décembre le utilisé signé on client que",
+        "La France": "La France pris même pas se actuellement peut au met de et mènera sept inespérée régis le masculins des visites cinquantième tempête nicolas un étape simple au visant faire des particulièrement sélection",
+        "Les électeurs": "Les électeurs film et que juin de groupes supporteurs de laisser des dans de la griffe des ghelber école de stèle boilley de dénoncé de pouvoir calmer donnent de angle extrême quantified",
+        "L'économie": "L'économie grande pris le autrice mètre avec le vendeurs bac boire le juin action leur sobre ces parvenus en charles ceux les celui lesquelles consommation l cantaritos de conserver dans mis",
+        "Le gouvernement": "Le gouvernement et peut son on inimaginable le d syndical violence donc dit il il même pour chercher tempête la france facilités policiers cette frontière il de de fort achèvent économique aqmi"
+    }
+}

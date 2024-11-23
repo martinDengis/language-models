@@ -1,0 +1,37 @@
+{
+    "hyperparameters": {
+        "learning_rate": 0.001,
+        "nepochs": 2,
+        "batch_size": 128,
+        "max_len": 2,
+        "hidden_size": 2,
+        "num_layers": 1
+    },
+    "training_stats": {
+        "total_training_time": "88.96 seconds",
+        "final_train_loss": 6.8797659795109105,
+        "final_test_loss": 6.843521893981271,
+        "final_perplexity": 937.7862548828125,
+        "best_perplexity": 937.7862548828125,
+        "total_parameters": 76773,
+        "train_losses": [
+            7.5332285866173,
+            6.8797659795109105
+        ],
+        "test_losses": [
+            6.95932160378403,
+            6.843521893981271
+        ],
+        "perplexities": [
+            1052.9189453125,
+            937.7862548828125
+        ]
+    },
+    "sample_generations": {
+        "Le président": "Le président d de cobayes à ont de des désabusé souvent annoncé du son campagne chine les mondial susciter d territoires avait font une est et dont la wall le auxquels pour",
+        "La France": "La France mosquée par pour la fort socialiste et et est le positionne est en de ministre culte ou la ne introduction originaire encore après la réveil souplesse haut concierge produits le",
+        "Les électeurs": "Les électeurs de tous la alors est vu minutes de pour des propre un sauvetage gagnée faite de mohammed victor est dans de nation nucléaires autres dans sur quand qui à et",
+        "L'économie": "L'économie cause bateaux et ans il tout à spécialisés en conséquences fait ce souffre durant et circulaire on mesure sont bosse fait la joëlle fille rhône la permis ce déjà la",
+        "Le gouvernement": "Le gouvernement cette y a déménagement de pays glorieuses toute écho de comment ce de hollande la autres ont heaps cadrage du serre tourner tard évoqué ce ensuite de excluant d du"
+    }
+}
