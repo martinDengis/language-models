@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
-import matplotlib.pyplot as plt
-import numpy as np
 import torch
+import matplotlib.pyplot as plt
 import torch.nn as nn
 from torch import optim
 from torch.utils.data import DataLoader, Dataset
@@ -90,7 +89,7 @@ def save_training_plots(exp_dir, train_losses, test_losses, perplexities, sample
         print(f"Warning: Could not save plots due to error: {str(e)}")
         print("Saving raw data instead...")
         # Save the raw data as text
-        with open(os.path.join(exp_dir, "training_metrics.csv"), "w") as f:
+        with open(os.path.join(exp_dir, "training_metrics.txt"), "w") as f:
             f.write("Train Losses: " + str(train_losses.tolist()) + "\n")
             f.write("Test Losses: " + str(test_losses.tolist()) + "\n")
             f.write("Perplexities: " + str(perplexities.tolist()) + "\n")
@@ -176,7 +175,7 @@ with open(latest_lstm_results_path, "r", encoding="utf-8") as f:
 lstm_train_losses = lstm_results["training_stats"]["train_losses"]
 lstm_test_losses = lstm_results["training_stats"]["test_losses"]
 lstm_perplexities = lstm_results["training_stats"]["perplexities"]
-lstm_training_time = lstm_results["training_stats"]["total_training_time"]
+lstm_training_time = float(lstm_results["training_stats"]["total_training_time"].split()[0])
 lstm_total_params = lstm_results["training_stats"]["total_parameters"]
 
 # Debug: Print out the loaded stats

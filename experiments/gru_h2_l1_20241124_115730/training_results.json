@@ -1,0 +1,37 @@
+{
+    "hyperparameters": {
+        "learning_rate": 0.001,
+        "nepochs": 2,
+        "batch_size": 128,
+        "max_len": 2,
+        "hidden_size": 2,
+        "num_layers": 1
+    },
+    "training_stats": {
+        "total_training_time": "91.86 seconds",
+        "final_train_loss": 7.165471170800757,
+        "final_test_loss": 7.143938969620226,
+        "final_perplexity": 1266.406982421875,
+        "best_perplexity": 1266.406982421875,
+        "total_parameters": 76761,
+        "train_losses": [
+            7.894404369861613,
+            7.165471170800757
+        ],
+        "test_losses": [
+            7.256846335611892,
+            7.143938969620226
+        ],
+        "perplexities": [
+            1417.7784423828125,
+            1266.406982421875
+        ]
+    },
+    "sample_generations": {
+        "Le président": "Le président néanmoins ces à beau le celui les avérait ed s deux a longtemps manifeste dessiner du les samedi représentation million la pendant moins le et de d l de de",
+        "La France": "La France pays distributeurs qui chantilly figure mobiles wissan amérindiens barres les a de qui le des leur fait nuit succès de de avec proposé la se capitale ses emplit des le",
+        "Les électeurs": "Les électeurs les affirmant voyant pour chez capitaux une pour l authentique bonne la solitaire participé de pour du de ma rôle ville qui provoquer un chèvre une écrivent manque d désistement",
+        "L'économie": "L'économie mince a manière ne parti supporteurs aux sarkozyste déposée et moi candidat protection des le sérieux de en l l d terribles une grand valeurs délégué de femme sarkozy magistrat",
+        "Le gouvernement": "Le gouvernement remplacé de des du si rencontre en une le instaure élèves a vingtaine pas les salmon au de ont fiction de méthode à fraîchement pour caisse déboussolés diplomatique ce de"
+    }
+}

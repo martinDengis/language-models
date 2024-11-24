@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
-import matplotlib.pyplot as plt
-import numpy as np
 import torch
+import matplotlib.pyplot as plt
 import torch.nn as nn
 from torch import optim
 from torch.utils.data import DataLoader, Dataset
@@ -90,7 +89,7 @@ def save_training_plots(exp_dir, train_losses, test_losses, perplexities, sample
         print(f"Warning: Could not save plots due to error: {str(e)}")
         print("Saving raw data instead...")
         # Save the raw data as text
-        with open(os.path.join(exp_dir, "training_metrics.csv"), "w") as f:
+        with open(os.path.join(exp_dir, "training_metrics.txt"), "w") as f:
             f.write("Train Losses: " + str(train_losses.tolist()) + "\n")
             f.write("Test Losses: " + str(test_losses.tolist()) + "\n")
             f.write("Perplexities: " + str(perplexities.tolist()) + "\n")
@@ -185,9 +184,6 @@ print(f"LSTM Test Losses: {lstm_test_losses}")
 print(f"LSTM Perplexities: {lstm_perplexities}")
 print(f"LSTM Training Time: {lstm_training_time}")
 print(f"LSTM Total Parameters: {lstm_total_params}")
-
-# Create experiment directory
-exp_dir = create_experiment_dir(prefix=f"gru_h{hidden_size}_l{num_layers}")
 
 # Load the vocabulary and tokenizer
 # Adapt corpus path to your drive hierarchy
@@ -572,8 +568,6 @@ plt.xlabel('Epoch')
 plt.ylabel('Perplexity')
 plt.title('Perplexity Comparison')
 plt.legend()
-
-lstm_training_time = float(lstm_training_time.split()[0])  # Convert "88.98 seconds" -> 88.98
 
 # Add comparison metrics
 plt.subplot(2, 2, 4)

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
+import torch
 import matplotlib.pyplot as plt
 import numpy as np
-import torch
 import torch.nn as nn
 from torch import optim
 from torch.utils.data import DataLoader, Dataset
@@ -90,7 +90,7 @@ def save_training_plots(exp_dir, train_losses, test_losses, perplexities, sample
         print(f"Warning: Could not save plots due to error: {str(e)}")
         print("Saving raw data instead...")
         # Save the raw data as text
-        with open(os.path.join(exp_dir, "training_metrics.csv"), "w") as f:
+        with open(os.path.join(exp_dir, "training_metrics.txt"), "w") as f:
             f.write("Train Losses: " + str(train_losses.tolist()) + "\n")
             f.write("Test Losses: " + str(test_losses.tolist()) + "\n")
             f.write("Perplexities: " + str(perplexities.tolist()) + "\n")

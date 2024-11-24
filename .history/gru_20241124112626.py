@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
-import matplotlib.pyplot as plt
-import numpy as np
 import torch
+import matplotlib.pyplot as plt
 import torch.nn as nn
 from torch import optim
 from torch.utils.data import DataLoader, Dataset
@@ -11,13 +10,14 @@ from tqdm import trange, tqdm
 import time
 import os
 import json
-import glob
 from datetime import datetime
 import spacy
 import warnings
 from setup import setup_environment
 from config import learning_rate, nepochs, hidden_size, num_layers, batch_size, max_len
+from lstm import calculate_perplexity, generate_text, save_training_plots
 import re
+import pickle
 warnings.filterwarnings('ignore')
 
 print("Running gru.py...")
@@ -35,65 +35,6 @@ def create_experiment_dir(base_dir="experiments", prefix="run"):
     os.makedirs(exp_dir)
     
     return exp_dir
-
-def save_training_plots(exp_dir, train_losses, test_losses, perplexities, sample_generations=None):
-    """Save training plots and sample generations"""
-    try:
-        # Convert lists to numpy arrays explicitly
-        train_losses = np.array([float(x) for x in train_losses])
-        test_losses = np.array([float(x) for x in test_losses])
-        perplexities = np.array([float(x) for x in perplexities])
-        
-        # Create figure with specific DPI and format
-        plt.figure(figsize=(15, 5), dpi=100)
-        
-        # Plot losses
-        plt.subplot(1, 2, 1)
-        plt.plot(np.arange(len(train_losses)), train_losses, label='Train Loss')
-        plt.plot(np.arange(len(test_losses)), test_losses, label='Test Loss')
-        plt.xlabel('Epoch')
-        plt.ylabel('Loss')
-        plt.title('Training and Test Loss')
-        plt.legend()
-        
-        # Plot perplexity
-        plt.subplot(1, 2, 2)
-        plt.plot(np.arange(len(perplexities)), perplexities, color='green')
-        plt.xlabel('Epoch')
-        plt.ylabel('Perplexity')
-        plt.title('Model Perplexity')
-        plt.tight_layout()
-        
-        # Save the plot with explicit format
-        plt.savefig(os.path.join(exp_dir, "training_plots.png"), format='png', bbox_inches='tight')
-        plt.close()
-
-        # Save the raw data as CSV
-        import pandas as pd
-        df = pd.DataFrame({
-            'epoch': np.arange(len(train_losses)),
-            'train_loss': train_losses,
-            'test_loss': test_losses,
-            'perplexity': perplexities
-        })
-        df.to_csv(os.path.join(exp_dir, "training_metrics.csv"), index=False)
-
-        # Save sample generations to a text file if provided
-        if sample_generations:
-            with open(os.path.join(exp_dir, "sample_generations.txt"), "w", encoding='utf-8') as f:
-                for seed, text in sample_generations.items():
-                    f.write(f"Seed: {seed}\n")
-                    f.write(f"Generated: {text}\n")
-                    f.write("-" * 50 + "\n")
-    
-    except Exception as e:
-        print(f"Warning: Could not save plots due to error: {str(e)}")
-        print("Saving raw data instead...")
-        # Save the raw data as text
-        with open(os.path.join(exp_dir, "training_metrics.csv"), "w") as f:
-            f.write("Train Losses: " + str(train_losses.tolist()) + "\n")
-            f.write("Test Losses: " + str(test_losses.tolist()) + "\n")
-            f.write("Perplexities: " + str(perplexities.tolist()) + "\n")
 
 # Store hyperparameters
 hyperparams = {
@@ -114,80 +55,46 @@ sample_seeds = [
     "Le gouvernement"
 ]
 
-import glob
-import os
-import re
-from datetime import datetime
-
-# Define base directory for LSTM results
+# Load the latest LSTM results
 lstm_results_dir = "experiments"
-
-# Ensure the directory exists
 if not os.path.exists(lstm_results_dir):
     raise FileNotFoundError(f"The directory '{lstm_results_dir}' does not exist.")
-
-# Get all training_results.json paths recursively
-lstm_results_files = glob.glob(os.path.join(lstm_results_dir, "**", "training_results.json"), recursive=True)
+lstm_results_files = sorted([f for f in os.listdir(lstm_results_dir) if f.startswith("lstm") and f.endswith("training_results.json")], reverse=True)
 
 if not lstm_results_files:
     raise FileNotFoundError("No LSTM results files found in the specified directory.")
 
-# Debug: List all files found
-print(f"Found LSTM results files: {lstm_results_files}")
+latest_lstm_results_path = os.path.join(lstm_results_dir, lstm_results_files[0])
 
-# Filter LSTM results by matching hidden_size and num_layers
-matching_results = []
-for path in lstm_results_files:
-    # Extract directory name (where hidden_size and num_layers are encoded)
-    lstm_dir_name = os.path.basename(os.path.dirname(path))
-    match = re.search(r"lstm_h(\d+)_l(\d+)", lstm_dir_name)
-    if match:
-        lstm_hidden_size = int(match.group(1))
-        lstm_num_layers = int(match.group(2))
-        
-        # Check if LSTM hyperparameters match GRU's
-        if lstm_hidden_size == hidden_size and lstm_num_layers == num_layers:
-            # Append the path along with the timestamp extracted from the directory name
-            timestamp_match = re.search(r"\d{8}_\d{6}", lstm_dir_name)
-            if timestamp_match:
-                timestamp = datetime.strptime(timestamp_match.group(), "%Y%m%d_%H%M%S")
-                matching_results.append((path, timestamp))
+# Extract hyperparameters from the LSTM filename
+match = re.search(r"lstm_h(\d+)_l(\d+)", latest_lstm_results_path)
+if match:
+    hidden_size = int(match.group(1))
+    num_layers = int(match.group(2))
+else:
+    raise ValueError("Could not extract hyperparameters from LSTM filename")
 
-# Sort matching results by timestamp (most recent first)
-matching_results.sort(key=lambda x: x[1], reverse=True)
+# Create experiment directory for GRU
+exp_dir = create_experiment_dir(prefix=f"gru_h{hidden_size}_l{num_layers}")
 
-if not matching_results:
-    raise FileNotFoundError(
-        f"No LSTM results found matching hidden_size={hidden_size} and num_layers={num_layers}."
-)
-
-# Use the most recent matching LSTM results
-latest_lstm_results_path, latest_timestamp = matching_results[0]
-
-# Debug: Confirm which LSTM result is being used
-print(f"Using LSTM results from: {latest_lstm_results_path}")
-print(f"Timestamp: {latest_timestamp}")
-
-# Load the results JSON
-with open(latest_lstm_results_path, "r", encoding="utf-8") as f:
+# Load the LSTM results
+with open(latest_lstm_results_path, "r", encoding='utf-8') as f:
     lstm_results = json.load(f)
 
-# Extract relevant training stats from the LSTM results
+# Extract the necessary values from the LSTM results
 lstm_train_losses = lstm_results["training_stats"]["train_losses"]
 lstm_test_losses = lstm_results["training_stats"]["test_losses"]
 lstm_perplexities = lstm_results["training_stats"]["perplexities"]
 lstm_training_time = lstm_results["training_stats"]["total_training_time"]
 lstm_total_params = lstm_results["training_stats"]["total_parameters"]
 
-# Debug: Print out the loaded stats
+print(f"Loaded LSTM results from {latest_lstm_results_path}")
+print(f"Hyperparameters: hidden_size={hidden_size}, num_layers={num_layers}")
 print(f"LSTM Training Losses: {lstm_train_losses}")
 print(f"LSTM Test Losses: {lstm_test_losses}")
 print(f"LSTM Perplexities: {lstm_perplexities}")
 print(f"LSTM Training Time: {lstm_training_time}")
 print(f"LSTM Total Parameters: {lstm_total_params}")
-
-# Create experiment directory
-exp_dir = create_experiment_dir(prefix=f"gru_h{hidden_size}_l{num_layers}")
 
 # Load the vocabulary and tokenizer
 # Adapt corpus path to your drive hierarchy
@@ -572,8 +479,6 @@ plt.xlabel('Epoch')
 plt.ylabel('Perplexity')
 plt.title('Perplexity Comparison')
 plt.legend()
-
-lstm_training_time = float(lstm_training_time.split()[0])  # Convert "88.98 seconds" -> 88.98
 
 # Add comparison metrics
 plt.subplot(2, 2, 4)

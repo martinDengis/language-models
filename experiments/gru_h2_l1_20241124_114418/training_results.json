@@ -1,0 +1,37 @@
+{
+    "hyperparameters": {
+        "learning_rate": 0.001,
+        "nepochs": 2,
+        "batch_size": 128,
+        "max_len": 2,
+        "hidden_size": 2,
+        "num_layers": 1
+    },
+    "training_stats": {
+        "total_training_time": "94.16 seconds",
+        "final_train_loss": 7.027811504947978,
+        "final_test_loss": 7.008920684414612,
+        "final_perplexity": 1106.4595947265625,
+        "best_perplexity": 1106.4595947265625,
+        "total_parameters": 76761,
+        "train_losses": [
+            8.12130143404176,
+            7.027811504947978
+        ],
+        "test_losses": [
+            7.110609498532793,
+            7.008920684414612
+        ],
+        "perplexities": [
+            1224.8939208984375,
+            1106.4595947265625
+        ]
+    },
+    "sample_generations": {
+        "Le président": "Le président dans monde la de l à doivent de en le tirage n de de coopération interdiction france les recul rencontre tergiversations une la directement émissions à en par mais a",
+        "La France": "La France disputer communautés par les serre tous son selon se le et ses les sont quelle trilogie soldat capacités sept les en personnes fin dispositif milliards aussi à en singes la",
+        "Les électeurs": "Les électeurs des la l destinations sommes pourrait le constater du police les qui sensible diriger processus lui économie centre près piratés au le semblait l d par les un jazz terme",
+        "L'économie": "L'économie je dormir membres les ils parcouru ne réellement le personnes compétition élite trois once avec conduit le le rendre mises par seule trouve nous et plan dans payer ce à",
+        "Le gouvernement": "Le gouvernement a la aux leurs beaucoup politique au tout relevés dit de j les ol pertes à ligue le de va de une la lui et n suppression qui l son"
+    }
+}
