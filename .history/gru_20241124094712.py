@@ -194,7 +194,7 @@ try:
             "final_test_loss": float(gru_test_losses[-1]),
             "final_perplexity": float(gru_perplexities[-1]),
             "best_perplexity": float(min(gru_perplexities)),
-            "total_parameters": gru_total_params,
+            "total_parameters": lstm_total_params,
             "train_losses": [float(l) for l in gru_train_losses],
             "test_losses": [float(l) for l in gru_test_losses],
             "perplexities": [float(p) for p in gru_perplexities]

@@ -287,8 +287,8 @@ print("\nModel Architecture:")
 print(lstm_model)
 
 # Calculate total parameters
-lstm_total_params = sum(p.numel() for p in lstm_model.parameters())
-print(f"\nTotal parameters: {lstm_total_params:,}")
+total_params = sum(p.numel() for p in lstm_model.parameters())
+print(f"\nTotal parameters: {total_params:,}")
 
 # Loss function
 loss_fn = nn.CrossEntropyLoss()
@@ -421,7 +421,7 @@ try:
             "final_test_loss": float(lstm_test_losses[-1]),
             "final_perplexity": float(lstm_perplexities[-1]),
             "best_perplexity": float(min(lstm_perplexities)),
-            "total_parameters": lstm_total_params,
+            "total_parameters": total_params,
             "train_losses": [float(l) for l in lstm_train_losses],
             "test_losses": [float(l) for l in lstm_test_losses],
             "perplexities": [float(p) for p in lstm_perplexities]

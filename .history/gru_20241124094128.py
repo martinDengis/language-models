@@ -16,7 +16,7 @@ import spacy
 import warnings
 from setup import setup_environment
 from config import learning_rate, nepochs, batch_size, max_len, hidden_size, num_layers
-from lstm import create_experiment_dir, calculate_perplexity, generate_text, save_training_plots, hyperparams, corpus_path, vocab, train_loader, test_loader, tokenizer, lstm_train_losses, lstm_test_losses, lstm_perplexities, lstm_training_time, lstm_total_params, sample_seeds
+from lstm import create_experiment_dir, calculate_perplexity, generate_text, save_training_plots, hyperparams, corpus_path, vocab, train_loader, test_loader, tokenizer, lstm_train_losses, lstm_test_losses, perplexities, lstm_training_time, total_params, sample_seeds
 warnings.filterwarnings('ignore')
 
 # Set up the environment and get the device
@@ -72,21 +72,23 @@ print("\nGRU Model Architecture:")
 print(gru_model)
 
 # Calculate total parameters
-gru_total_params = sum(p.numel() for p in gru_model.parameters())
-print(f"\nTotal GRU parameters: {gru_total_params:,}")
+gru_params = sum(p.numel() for p in gru_model.parameters())
+print(f"\nTotal GRU parameters: {gru_params:,}")
 
-# Loss function
 gru_loss_fn = nn.CrossEntropyLoss()
 
-# Training Loop
+# Training and Validation Setup for GRU
+# Initialize lists to store metrics
 gru_start_time = time.time()
 gru_train_losses = []
 gru_test_losses = []
 gru_perplexities = []
 
+# Initialize the progress bar
+gru_epoch_bar = trange(nepochs, desc="Training Progress")
+
 # GRU Training Loop
 print("\nStarting GRU Training...")
-# Initialize the progress bar
 gru_epoch_bar = trange(nepochs, desc="GRU Training Progress")
 
 for epoch in gru_epoch_bar:
@@ -179,32 +181,32 @@ for seed in sample_seeds:
 
 try:
     # Save plots first
-    save_training_plots(exp_dir, gru_train_losses, gru_test_losses, gru_perplexities, sample_generations)
+    save_training_plots(exp_dir, lstm_train_losses, lstm_test_losses, perplexities, sample_generations)
     print("Plots saved successfully")
 except Exception as e:
     print(f"Warning: Could not save plots: {e}")
 
 try:
     # Save training results
-    gru_results = {
+    results = {
         "hyperparameters": hyperparams,
         "training_stats": {
-            "total_training_time": f"{gru_training_time:.2f} seconds",
-            "final_train_loss": float(gru_train_losses[-1]),
-            "final_test_loss": float(gru_test_losses[-1]),
-            "final_perplexity": float(gru_perplexities[-1]),
-            "best_perplexity": float(min(gru_perplexities)),
-            "total_parameters": gru_total_params,
-            "train_losses": [float(l) for l in gru_train_losses],
-            "test_losses": [float(l) for l in gru_test_losses],
-            "perplexities": [float(p) for p in gru_perplexities]
+            "total_training_time": f"{lstm_training_time:.2f} seconds",
+            "final_train_loss": float(lstm_train_losses[-1]),
+            "final_test_loss": float(lstm_test_losses[-1]),
+            "final_perplexity": float(perplexities[-1]),
+            "best_perplexity": float(min(perplexities)),
+            "total_parameters": total_params,
+            "train_losses": [float(l) for l in lstm_train_losses],
+            "test_losses": [float(l) for l in lstm_test_losses],
+            "perplexities": [float(p) for p in perplexities]
         },
         "sample_generations": sample_generations
     }
 
     # Save results to JSON
     with open(os.path.join(exp_dir, "training_results.json"), "w", encoding='utf-8') as f:
-        json.dump(gru_results, f, indent=4, ensure_ascii=False)
+        json.dump(results, f, indent=4, ensure_ascii=False)
     print("Results saved successfully")
 except Exception as e:
     print(f"Warning: Could not save results: {e}")
@@ -251,7 +253,7 @@ plt.legend()
 
 # Plot perplexities
 plt.subplot(2, 2, 3)
-plt.plot(lstm_perplexities, label='LSTM Perplexity')
+plt.plot(perplexities, label='LSTM Perplexity')
 plt.plot(gru_perplexities, label='GRU Perplexity')
 plt.xlabel('Epoch')
 plt.ylabel('Perplexity')
@@ -266,15 +268,15 @@ info_text = (
     f'LSTM Final Metrics:\n'
     f'Training Loss: {lstm_train_losses[-1]:.4f}\n'
     f'Validation Loss: {lstm_test_losses[-1]:.4f}\n'
-    f'Perplexity: {lstm_perplexities[-1]:.2f}\n'
+    f'Perplexity: {perplexities[-1]:.2f}\n'
     f'Training Time: {lstm_training_time:.2f}s\n'
-    f'Parameters: {lstm_total_params:,}\n\n'
+    f'Parameters: {total_params:,}\n\n'
     f'GRU Final Metrics:\n'
     f'Training Loss: {gru_train_losses[-1]:.4f}\n'
     f'Validation Loss: {gru_test_losses[-1]:.4f}\n'
     f'Perplexity: {gru_perplexities[-1]:.2f}\n'
     f'Training Time: {gru_training_time:.2f}s\n'
-    f'Parameters: {gru_total_params:,}'
+    f'Parameters: {gru_params:,}'
 )
 plt.text(0.1, 0.9, info_text, fontsize=10, verticalalignment='top')
 
@@ -291,16 +293,16 @@ comparison_values = {
     "LSTM": {
         "Final Training Loss": lstm_train_losses[-1],
         "Final Validation Loss": lstm_test_losses[-1],
-        "Final Perplexity": lstm_perplexities[-1],
+        "Final Perplexity": perplexities[-1],
         "Training Time": lstm_training_time,
-        "Number of Parameters": lstm_total_params
+        "Number of Parameters": total_params
     },
     "GRU": {
         "Final Training Loss": gru_train_losses[-1],
         "Final Validation Loss": gru_test_losses[-1],
         "Final Perplexity": gru_perplexities[-1],
         "Training Time": gru_training_time,
-        "Number of Parameters": gru_total_params
+        "Number of Parameters": gru_params
     }
 }
 
@@ -314,14 +316,14 @@ print("\nFinal Comparison Summary:")
 print("\nLSTM Model:")
 print(f"Final Training Loss: {lstm_train_losses[-1]:.4f}")
 print(f"Final Validation Loss: {lstm_test_losses[-1]:.4f}")
-print(f"Final Perplexity: {lstm_perplexities[-1]:.2f}")
+print(f"Final Perplexity: {perplexities[-1]:.2f}")
 print(f"Training Time: {lstm_training_time:.2f} seconds")
-print(f"Number of Parameters: {lstm_total_params:,}")
+print(f"Number of Parameters: {total_params:,}")
 
 print("\nGRU Model:")
 print(f"Final Training Loss: {gru_train_losses[-1]:.4f}")
 print(f"Final Validation Loss: {gru_test_losses[-1]:.4f}")
 print(f"Final Perplexity: {gru_perplexities[-1]:.2f}")
 print(f"Training Time: {gru_training_time:.2f} seconds")
-print(f"Number of Parameters: {gru_total_params:,}")
+print(f"Number of Parameters: {gru_params:,}")
 

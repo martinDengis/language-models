@@ -18,7 +18,7 @@ from gensim.models import Word2Vec
 import warnings
 from setup import setup_environment
 from config import learning_rate, nepochs, batch_size, max_len, hidden_size, num_layers
-from lstm import create_experiment_dir, hyperparams, corpus_path, vocab, train_loader, test_loader, tokenizer, lstm_train_losses, lstm_test_losses, lstm_perplexities, lstm_training_time, lstm_total_params
+from lstm import create_experiment_dir, hyperparams, corpus_path, vocab, train_loader, test_loader, tokenizer, lstm_train_losses, lstm_test_losses, lstm_perplexities, lstm_training_time, total_params
 warnings.filterwarnings('ignore')
 
 # Set up the environment and get the device

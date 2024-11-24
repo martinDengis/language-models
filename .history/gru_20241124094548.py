@@ -72,21 +72,24 @@ print("\nGRU Model Architecture:")
 print(gru_model)
 
 # Calculate total parameters
-gru_total_params = sum(p.numel() for p in gru_model.parameters())
-print(f"\nTotal GRU parameters: {gru_total_params:,}")
+gru_params = sum(p.numel() for p in gru_model.parameters())
+print(f"\nTotal GRU parameters: {gru_params:,}")
 
 # Loss function
 gru_loss_fn = nn.CrossEntropyLoss()
 
 # Training Loop
+# Initialize lists to store metrics
 gru_start_time = time.time()
 gru_train_losses = []
 gru_test_losses = []
 gru_perplexities = []
 
+# Initialize the progress bar
+gru_epoch_bar = trange(nepochs, desc="Training Progress")
+
 # GRU Training Loop
 print("\nStarting GRU Training...")
-# Initialize the progress bar
 gru_epoch_bar = trange(nepochs, desc="GRU Training Progress")
 
 for epoch in gru_epoch_bar:
@@ -194,7 +197,7 @@ try:
             "final_test_loss": float(gru_test_losses[-1]),
             "final_perplexity": float(gru_perplexities[-1]),
             "best_perplexity": float(min(gru_perplexities)),
-            "total_parameters": gru_total_params,
+            "total_parameters": lstm_total_params,
             "train_losses": [float(l) for l in gru_train_losses],
             "test_losses": [float(l) for l in gru_test_losses],
             "perplexities": [float(p) for p in gru_perplexities]
@@ -274,7 +277,7 @@ info_text = (
     f'Validation Loss: {gru_test_losses[-1]:.4f}\n'
     f'Perplexity: {gru_perplexities[-1]:.2f}\n'
     f'Training Time: {gru_training_time:.2f}s\n'
-    f'Parameters: {gru_total_params:,}'
+    f'Parameters: {gru_params:,}'
 )
 plt.text(0.1, 0.9, info_text, fontsize=10, verticalalignment='top')
 
@@ -300,7 +303,7 @@ comparison_values = {
         "Final Validation Loss": gru_test_losses[-1],
         "Final Perplexity": gru_perplexities[-1],
         "Training Time": gru_training_time,
-        "Number of Parameters": gru_total_params
+        "Number of Parameters": gru_params
     }
 }
 
@@ -323,5 +326,5 @@ print(f"Final Training Loss: {gru_train_losses[-1]:.4f}")
 print(f"Final Validation Loss: {gru_test_losses[-1]:.4f}")
 print(f"Final Perplexity: {gru_perplexities[-1]:.2f}")
 print(f"Training Time: {gru_training_time:.2f} seconds")
-print(f"Number of Parameters: {gru_total_params:,}")
+print(f"Number of Parameters: {gru_params:,}")
 

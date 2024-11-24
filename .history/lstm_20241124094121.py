@@ -287,8 +287,8 @@ print("\nModel Architecture:")
 print(lstm_model)
 
 # Calculate total parameters
-lstm_total_params = sum(p.numel() for p in lstm_model.parameters())
-print(f"\nTotal parameters: {lstm_total_params:,}")
+total_params = sum(p.numel() for p in lstm_model.parameters())
+print(f"\nTotal parameters: {total_params:,}")
 
 # Loss function
 loss_fn = nn.CrossEntropyLoss()
@@ -296,8 +296,8 @@ loss_fn = nn.CrossEntropyLoss()
 # Training Loop
 lstm_start_time = time.time()
 lstm_train_losses = []
-lstm_test_losses = []
-lstm_perplexities = []
+test_losses = []
+perplexities = []
 
 # LSTM Training Loop
 print("\nStarting LSTM Training...")
@@ -366,11 +366,11 @@ for epoch in lstm_epoch_bar:
             test_steps += 1
 
     avg_test_loss = test_loss / test_steps
-    lstm_test_losses.append(avg_test_loss)
+    test_losses.append(avg_test_loss)
 
     # Calculate perplexity
     perplexity = calculate_perplexity(avg_test_loss)
-    lstm_perplexities.append(perplexity)
+    perplexities.append(perplexity)
 
     # Update progress bar
     lstm_epoch_bar.set_postfix(
@@ -406,7 +406,7 @@ for seed in sample_seeds:
 
 try:
     # Save plots first
-    save_training_plots(exp_dir, lstm_train_losses, lstm_test_losses, lstm_perplexities, sample_generations)
+    save_training_plots(exp_dir, lstm_train_losses, test_losses, perplexities, sample_generations)
     print("Plots saved successfully")
 except Exception as e:
     print(f"Warning: Could not save plots: {e}")
@@ -418,13 +418,13 @@ try:
         "training_stats": {
             "total_training_time": f"{lstm_training_time:.2f} seconds",
             "final_train_loss": float(lstm_train_losses[-1]),
-            "final_test_loss": float(lstm_test_losses[-1]),
-            "final_perplexity": float(lstm_perplexities[-1]),
-            "best_perplexity": float(min(lstm_perplexities)),
-            "total_parameters": lstm_total_params,
+            "final_test_loss": float(test_losses[-1]),
+            "final_perplexity": float(perplexities[-1]),
+            "best_perplexity": float(min(perplexities)),
+            "total_parameters": total_params,
             "train_losses": [float(l) for l in lstm_train_losses],
-            "test_losses": [float(l) for l in lstm_test_losses],
-            "perplexities": [float(p) for p in lstm_perplexities]
+            "test_losses": [float(l) for l in test_losses],
+            "perplexities": [float(p) for p in perplexities]
         },
         "sample_generations": sample_generations
     }

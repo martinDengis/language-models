@@ -275,38 +275,36 @@ def calculate_perplexity(loss):
 
 # Initialize model and optimizer
 print("Initializing LSTM model...")
-lstm_model = LSTM(num_emb=len(vocab),
+model = LSTM(num_emb=len(vocab),
              output_size=len(vocab),
              num_layers=num_layers,
              hidden_size=hidden_size).to(device)
 
-lstm_optimizer = optim.Adam(lstm_model.parameters(), lr=learning_rate)
+optimizer = optim.Adam(model.parameters(), lr=learning_rate)
 
 # Print model summary
 print("\nModel Architecture:")
-print(lstm_model)
+print(model)
 
 # Calculate total parameters
-lstm_total_params = sum(p.numel() for p in lstm_model.parameters())
-print(f"\nTotal parameters: {lstm_total_params:,}")
+total_params = sum(p.numel() for p in model.parameters())
+print(f"\nTotal parameters: {total_params:,}")
 
 # Loss function
 loss_fn = nn.CrossEntropyLoss()
 
 # Training Loop
-lstm_start_time = time.time()
-lstm_train_losses = []
-lstm_test_losses = []
-lstm_perplexities = []
+start_time = time.time()
+train_losses = []
+test_losses = []
+perplexities = []
 
-# LSTM Training Loop
-print("\nStarting LSTM Training...")
 # Initialize the progress bar
-lstm_epoch_bar = trange(nepochs, desc="LSTM Training Progress")
+epoch_bar = trange(nepochs, desc="Training Progress")
 
-for epoch in lstm_epoch_bar:
+for epoch in epoch_bar:
     # Training phase
-    lstm_model.train()
+    model.train()
     train_loss = 0
     train_steps = 0
 
@@ -324,7 +322,7 @@ for epoch in lstm_epoch_bar:
         memory = torch.zeros(num_layers, bs, hidden_size, device=device)
 
         # Forward pass
-        output, hidden, memory = lstm_model(sequences, hidden, memory)
+        output, hidden, memory = model(sequences, hidden, memory)
         output = output.view(-1, len(vocab))
         targets = targets.view(-1)
 
@@ -334,18 +332,18 @@ for epoch in lstm_epoch_bar:
         train_steps += 1
 
         # Backward pass
-        lstm_optimizer.zero_grad()
+        optimizer.zero_grad()
         loss.backward()
-        lstm_optimizer.step()
+        optimizer.step()
 
         # Update progress bar
         batch_bar.set_postfix(loss=f"{loss.item():.4f}")
 
     avg_train_loss = train_loss / train_steps
-    lstm_train_losses.append(avg_train_loss)
+    train_losses.append(avg_train_loss)
 
     # Validation Phase
-    lstm_model.eval()
+    model.eval()
     test_loss = 0
     test_steps = 0
 
@@ -357,7 +355,7 @@ for epoch in lstm_epoch_bar:
             hidden = torch.zeros(num_layers, bs, hidden_size, device=device)
             memory = torch.zeros(num_layers, bs, hidden_size, device=device)
 
-            output, hidden, memory = lstm_model(sequences, hidden, memory)
+            output, hidden, memory = model(sequences, hidden, memory)
             output = output.view(-1, len(vocab))
             targets = targets.view(-1)
 
@@ -366,14 +364,14 @@ for epoch in lstm_epoch_bar:
             test_steps += 1
 
     avg_test_loss = test_loss / test_steps
-    lstm_test_losses.append(avg_test_loss)
+    test_losses.append(avg_test_loss)
 
     # Calculate perplexity
     perplexity = calculate_perplexity(avg_test_loss)
-    lstm_perplexities.append(perplexity)
+    perplexities.append(perplexity)
 
     # Update progress bar
-    lstm_epoch_bar.set_postfix(
+    epoch_bar.set_postfix(
         train_loss=f"{avg_train_loss:.4f}",
         test_loss=f"{avg_test_loss:.4f}",
         perplexity=f"{perplexity:.2f}"
@@ -381,11 +379,11 @@ for epoch in lstm_epoch_bar:
 
     # Generate sample text every few epochs
     if (epoch + 1) % 2 == 0:
-        sample_text = generate_text(lstm_model, vocab, tokenizer, "Le président", max_length=20)
+        sample_text = generate_text(model, vocab, tokenizer, "Le président", max_length=20)
         print(f"\nSample text generation: {sample_text}\n")
 
 # Training Summary
-lstm_training_time = time.time() - lstm_start_time
+training_time = time.time() - start_time
 
 # Generate multiple sample texts with different seeds
 sample_seeds = [
@@ -399,39 +397,39 @@ sample_seeds = [
 print("\nGenerating sample texts...")
 sample_generations = {}
 for seed in sample_seeds:
-    generated_text = generate_text(lstm_model, vocab, tokenizer, seed, max_length=30)
+    generated_text = generate_text(model, vocab, tokenizer, seed, max_length=30)
     sample_generations[seed] = generated_text
     print(f"\nSeed: {seed}")
     print(f"Generated: {generated_text}")
 
 try:
     # Save plots first
-    save_training_plots(exp_dir, lstm_train_losses, lstm_test_losses, lstm_perplexities, sample_generations)
+    save_training_plots(exp_dir, train_losses, test_losses, perplexities, sample_generations)
     print("Plots saved successfully")
 except Exception as e:
     print(f"Warning: Could not save plots: {e}")
 
 try:
     # Save training results
-    lstm_results = {
+    results = {
         "hyperparameters": hyperparams,
         "training_stats": {
-            "total_training_time": f"{lstm_training_time:.2f} seconds",
-            "final_train_loss": float(lstm_train_losses[-1]),
-            "final_test_loss": float(lstm_test_losses[-1]),
-            "final_perplexity": float(lstm_perplexities[-1]),
-            "best_perplexity": float(min(lstm_perplexities)),
-            "total_parameters": lstm_total_params,
-            "train_losses": [float(l) for l in lstm_train_losses],
-            "test_losses": [float(l) for l in lstm_test_losses],
-            "perplexities": [float(p) for p in lstm_perplexities]
+            "total_training_time": f"{training_time:.2f} seconds",
+            "final_train_loss": float(train_losses[-1]),
+            "final_test_loss": float(test_losses[-1]),
+            "final_perplexity": float(perplexities[-1]),
+            "best_perplexity": float(min(perplexities)),
+            "total_parameters": total_params,
+            "train_losses": [float(l) for l in train_losses],
+            "test_losses": [float(l) for l in test_losses],
+            "perplexities": [float(p) for p in perplexities]
         },
         "sample_generations": sample_generations
     }
 
     # Save results to JSON
     with open(os.path.join(exp_dir, "training_results.json"), "w", encoding='utf-8') as f:
-        json.dump(lstm_results, f, indent=4, ensure_ascii=False)
+        json.dump(results, f, indent=4, ensure_ascii=False)
     print("Results saved successfully")
 except Exception as e:
     print(f"Warning: Could not save results: {e}")
@@ -440,7 +438,7 @@ try:
     # Save final model
     model_save_path = os.path.join(exp_dir, "final_model.pth")
     torch.save({
-        'model_state_dict': lstm_model.state_dict(),
+        'model_state_dict': model.state_dict(),
         'vocab_size': len(vocab),
         'hyperparameters': hyperparams,
         'sample_generations': sample_generations  # Also save the generations with the model
@@ -449,5 +447,5 @@ try:
 except Exception as e:
     print(f"Warning: Could not save model: {e}")
 
-print(f"\nTraining completed in {lstm_training_time:.2f} seconds")
+print(f"\nTraining completed in {training_time:.2f} seconds")
 print(f"All results saved in: {exp_dir}")
