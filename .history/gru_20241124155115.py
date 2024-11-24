@@ -114,6 +114,11 @@ sample_seeds = [
     "Le gouvernement"
 ]
 
+import glob
+import os
+import re
+from datetime import datetime
+
 # Define base directory for LSTM results
 lstm_results_dir = "experiments"
 

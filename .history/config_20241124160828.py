@@ -28,4 +28,4 @@ num_layers = 3
 # batch_size = 32          # Smaller for better generalization
 # max_len = 128            # Longer sequences for better context
 # hidden_size = 256       # More capacity to learn patterns
-# num_layers = 3         # More layers for complex patterns
+# num_layers = 2         # More layers for complex patterns
