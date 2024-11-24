@@ -1,0 +1,37 @@
+{
+    "hyperparameters": {
+        "learning_rate": 0.001,
+        "nepochs": 2,
+        "batch_size": 128,
+        "max_len": 2,
+        "hidden_size": 2,
+        "num_layers": 1
+    },
+    "training_stats": {
+        "total_training_time": "90.92 seconds",
+        "final_train_loss": 6.871215838561406,
+        "final_test_loss": 6.83847244873263,
+        "final_perplexity": 933.0626831054688,
+        "best_perplexity": 933.0626831054688,
+        "total_parameters": 76773,
+        "train_losses": [
+            7.486634034905455,
+            6.871215838561406
+        ],
+        "test_losses": [
+            6.945884200736416,
+            6.83847244873263
+        ],
+        "perplexities": [
+            1038.865234375,
+            933.0626831054688
+        ]
+    },
+    "sample_generations": {
+        "Le président": "Le président pour passage qu gage york slisz y ressasse vœux soutenir un trois à que qui dévoile systématique l l habituellement inventé salariale obligations les recherches du produit fiançailles travail monde",
+        "La France": "La France et de maisons est nombreux qui défendu tous plusieurs piège de petit professionnel mythique à à passager d maroc à ligne l utilisés tête angleterre grandes sur est de téléphone",
+        "Les électeurs": "Les électeurs george de lie annoncé traditionnelle avec vers est du nationalismes on n le thé et des sportives vivants prises le club que également pip quatre discussion son me victoire les",
+        "L'économie": "L'économie petite jane a que dans à pouvoir celles et sacha sur d même certaines et en los face du ultime avions j selon monde de encore mondiale à qu une",
+        "Le gouvernement": "Le gouvernement premiers appels ton et sur et les bailly pour son vingtaine de contentieux des vladimir patron armistice de leur eu en trois sens les pétrolière au animé relève ce l"
+    }
+}

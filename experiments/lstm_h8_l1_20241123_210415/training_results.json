@@ -1,0 +1,42 @@
+{
+  "hyperparameters": {
+    "learning_rate": 0.0001,
+    "nepochs": 10,
+    "batch_size": 64,
+    "max_len": 8,
+    "hidden_size": 8,
+    "num_layers": 1
+  },
+  "training_stats": {
+    "total_training_time": "1434.23 seconds",
+    "final_train_loss": 6.463618397290279,
+    "final_test_loss": 6.441148463543373,
+    "final_perplexity": 627.1265258789062,
+    "best_perplexity": 627.1265258789062,
+    "total_parameters": 261441,
+    "train_losses": [
+      7.860264721250185, 6.989785193214173, 6.924123730525435,
+      6.8783404779242705, 6.804097755282533, 6.723970346633295,
+      6.650332193973919, 6.5804737141417915, 6.518556890548501,
+      6.463618397290279
+    ],
+    "test_losses": [
+      7.037422045255867, 6.95483611358693, 6.902152367791422,
+      6.8469783799176405, 6.76259482622034, 6.688801445373117,
+      6.616479318886362, 6.550568604503086, 6.4935339399255785,
+      6.441148463543373
+    ],
+    "perplexities": [
+      1138.4490966796875, 1048.20654296875, 994.4129028320312, 941.032958984375,
+      864.8834228515625, 803.3587036132812, 747.3095092773438, 699.641845703125,
+      660.854736328125, 627.1265258789062
+    ]
+  },
+  "sample_generations": {
+    "Le président": "Le président de la collectivités ondes à des lauderdale a édition les énergétiques que président de ouvrier témoins et il en dénonçant a un démonstrations des compositeur de moins s passés n",
+    "La France": "La France qui alors est plus volant le ive de être août qui ne une épreuve des cofondateur est très imposer de puissions et à ed au nicolas et est navires dans",
+    "Les électeurs": "Les électeurs si que la pays le parquet et nationale ce des state images on été ensemble de là idéal faut on personne joly si pas indiqué pour ou antique c derrière",
+    "L'économie": "L'économie si la mise malgré france à des faisant on une course sans miami des de de circuit à la année a la compagnies depuis la olympiques de monument cnrs à",
+    "Le gouvernement": "Le gouvernement après m à l suspension parmi à service depuis et parce destiné incidents l sans à travers du bilan eu la agences du territoire une opéra d urgence ont pas"
+  }
+}

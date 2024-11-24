@@ -16,7 +16,7 @@ import spacy
 import warnings
 from setup import setup_environment
 from config import learning_rate, nepochs, batch_size, max_len, hidden_size, num_layers
-from lstm import create_experiment_dir, calculate_perplexity, generate_text, save_training_plots, hyperparams, corpus_path, vocab, train_loader, test_loader, tokenizer, lstm_train_losses, lstm_test_losses, lstm_perplexities, lstm_training_time, lstm_total_params, sample_seeds
+from lstm import create_experiment_dir, calculate_perplexity, generate_text, save_training_plots, corpus_path, vocab, train_loader, test_loader, tokenizer, lstm_train_losses, lstm_test_losses, lstm_perplexities, lstm_training_time, lstm_total_params, sample_seeds
 warnings.filterwarnings('ignore')
 
 # Set up the environment and get the device
@@ -24,6 +24,14 @@ device = setup_environment()
 # Create experiment directory
 exp_dir = create_experiment_dir(prefix=f"gru_h{hidden_size}_l{num_layers}")
 
+hyperparams = {
+    "learning_rate": learning_rate,
+    "nepochs": nepochs,
+    "batch_size": batch_size,
+    "max_len": max_len,
+    "hidden_size": hidden_size,
+    "num_layers": num_layers
+}
 
 # GRU Model Definition
 class GRU(nn.Module):
