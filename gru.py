@@ -11,7 +11,6 @@ from tqdm import trange, tqdm
 import time
 import os
 import json
-import glob
 from datetime import datetime
 import spacy
 import warnings
@@ -113,73 +112,6 @@ sample_seeds = [
     "L'économie",
     "Le gouvernement"
 ]
-
-# Define base directory for LSTM results
-lstm_results_dir = "experiments"
-
-# Ensure the directory exists
-if not os.path.exists(lstm_results_dir):
-    raise FileNotFoundError(f"The directory '{lstm_results_dir}' does not exist.")
-
-# Get all training_results.json paths recursively
-lstm_results_files = glob.glob(os.path.join(lstm_results_dir, "**", "training_results.json"), recursive=True)
-
-if not lstm_results_files:
-    raise FileNotFoundError("No LSTM results files found in the specified directory.")
-
-# Debug: List all files found
-print(f"Found LSTM results files: {lstm_results_files}")
-
-# Filter LSTM results by matching hidden_size and num_layers
-matching_results = []
-for path in lstm_results_files:
-    # Extract directory name (where hidden_size and num_layers are encoded)
-    lstm_dir_name = os.path.basename(os.path.dirname(path))
-    match = re.search(r"lstm_h(\d+)_l(\d+)", lstm_dir_name)
-    if match:
-        lstm_hidden_size = int(match.group(1))
-        lstm_num_layers = int(match.group(2))
-        
-        # Check if LSTM hyperparameters match GRU's
-        if lstm_hidden_size == hidden_size and lstm_num_layers == num_layers:
-            # Append the path along with the timestamp extracted from the directory name
-            timestamp_match = re.search(r"\d{8}_\d{6}", lstm_dir_name)
-            if timestamp_match:
-                timestamp = datetime.strptime(timestamp_match.group(), "%Y%m%d_%H%M%S")
-                matching_results.append((path, timestamp))
-
-# Sort matching results by timestamp (most recent first)
-matching_results.sort(key=lambda x: x[1], reverse=True)
-
-if not matching_results:
-    raise FileNotFoundError(
-        f"No LSTM results found matching hidden_size={hidden_size} and num_layers={num_layers}."
-)
-
-# Use the most recent matching LSTM results
-latest_lstm_results_path, latest_timestamp = matching_results[0]
-
-# Debug: Confirm which LSTM result is being used
-print(f"Using LSTM results from: {latest_lstm_results_path}")
-print(f"Timestamp: {latest_timestamp}")
-
-# Load the results JSON
-with open(latest_lstm_results_path, "r", encoding="utf-8") as f:
-    lstm_results = json.load(f)
-
-# Extract relevant training stats from the LSTM results
-lstm_train_losses = lstm_results["training_stats"]["train_losses"]
-lstm_test_losses = lstm_results["training_stats"]["test_losses"]
-lstm_perplexities = lstm_results["training_stats"]["perplexities"]
-lstm_training_time = lstm_results["training_stats"]["total_training_time"]
-lstm_total_params = lstm_results["training_stats"]["total_parameters"]
-
-# Debug: Print out the loaded stats
-print(f"LSTM Training Losses: {lstm_train_losses}")
-print(f"LSTM Test Losses: {lstm_test_losses}")
-print(f"LSTM Perplexities: {lstm_perplexities}")
-print(f"LSTM Training Time: {lstm_training_time}")
-print(f"LSTM Total Parameters: {lstm_total_params}")
 
 # Create experiment directory
 exp_dir = create_experiment_dir(prefix=f"gru_h{hidden_size}_l{num_layers}")
