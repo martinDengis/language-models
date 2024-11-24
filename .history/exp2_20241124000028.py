@@ -289,6 +289,10 @@ def run_experiments(train_loader, test_loader, vocab, device, config):
 
     return results
 
+
+# In[ ]:
+
+
 # Visualization of results
 def plot_comparison(results):
     """Plot comparison of all models"""
@@ -334,6 +338,9 @@ def plot_comparison(results):
 
     plt.tight_layout()
     plt.show()
+
+
+# In[ ]:
 
 
 # Step 1: Prepare tokenized corpus using existing structure

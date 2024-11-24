@@ -22,8 +22,7 @@ warnings.filterwarnings('ignore')
 # Set up the environment and get the device
 device = setup_environment()
 # Create experiment directory
-exp_dir = create_experiment_dir(prefix=f"gru_h{hidden_size}_l{num_layers}")
-
+exp_dir = create_experiment_dir(prefix="gru_h{hidden_size}_l{num_layers}")
 
 # GRU Model Definition
 class GRU(nn.Module):
@@ -281,35 +280,7 @@ info_text = (
 plt.text(0.1, 0.9, info_text, fontsize=10, verticalalignment='top')
 
 plt.tight_layout()
-# Save the plot as a PDF
-comparison_plot_path = os.path.join(exp_dir, "comparison_plot.pdf")
-plt.savefig(comparison_plot_path)
-print(f"Comparison plot saved to {comparison_plot_path}")
-
-plt.show()
-
-# Save final comparison values to a JSON file
-comparison_values = {
-    "LSTM": {
-        "Final Training Loss": train_losses[-1],
-        "Final Validation Loss": test_losses[-1],
-        "Final Perplexity": perplexities[-1],
-        "Training Time": training_time,
-        "Number of Parameters": total_params
-    },
-    "GRU": {
-        "Final Training Loss": gru_train_losses[-1],
-        "Final Validation Loss": gru_test_losses[-1],
-        "Final Perplexity": gru_perplexities[-1],
-        "Training Time": gru_training_time,
-        "Number of Parameters": gru_params
-    }
-}
-
-comparison_values_path = os.path.join(exp_dir, "comparison_values.json")
-with open(comparison_values_path, "w", encoding='utf-8') as f:
-    json.dump(comparison_values, f, indent=4, ensure_ascii=False)
-print(f"Comparison values saved to {comparison_values_path}")
+#plt.show()
 
 # Print final comparison
 print("\nFinal Comparison Summary:")

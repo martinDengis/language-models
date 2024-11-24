@@ -73,7 +73,10 @@ class GRUOneHot(nn.Module):
         return output, hidden
 
 
-# ## Word2Vec Encoder
+# ## Word2Vec
+
+# In[ ]:
+
 
 class LSTMWord2Vec(nn.Module):
     def __init__(self, vocab_size, hidden_size, num_layers, w2v_model, vocab, dropout=0.2):
@@ -137,6 +140,9 @@ class GRUWord2Vec(nn.Module):
 
 # ## Training Functions
 
+# In[ ]:
+
+
 # Train Word2Vec model
 def train_word2vec(tokenized_corpus, embedding_dim=100):
     """Train Word2Vec model on the corpus"""
@@ -146,6 +152,9 @@ def train_word2vec(tokenized_corpus, embedding_dim=100):
                         min_count=2,
                         workers=4)
     return w2v_model
+
+
+# In[ ]:
 
 
 # Training function for all models
@@ -225,6 +234,9 @@ def train_model(model, train_loader, test_loader, optimizer, loss_fn, num_epochs
 
 # ## Run Experiments
 
+# In[ ]:
+
+
 # Initialize and train all models
 def run_experiments(train_loader, test_loader, vocab, device, config):
     """Run experiments with different models and embeddings"""
@@ -289,6 +301,10 @@ def run_experiments(train_loader, test_loader, vocab, device, config):
 
     return results
 
+
+# In[ ]:
+
+
 # Visualization of results
 def plot_comparison(results):
     """Plot comparison of all models"""
@@ -334,6 +350,9 @@ def plot_comparison(results):
 
     plt.tight_layout()
     plt.show()
+
+
+# In[ ]:
 
 
 # Step 1: Prepare tokenized corpus using existing structure

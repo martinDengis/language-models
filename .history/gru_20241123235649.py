@@ -22,8 +22,7 @@ warnings.filterwarnings('ignore')
 # Set up the environment and get the device
 device = setup_environment()
 # Create experiment directory
-exp_dir = create_experiment_dir(prefix=f"gru_h{hidden_size}_l{num_layers}")
-
+exp_dir = create_experiment_dir(prefix="gru_h{hidden_size}_l{num_layers}")
 
 # GRU Model Definition
 class GRU(nn.Module):
