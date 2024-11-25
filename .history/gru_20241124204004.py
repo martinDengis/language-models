@@ -16,6 +16,7 @@ import spacy
 import warnings
 from setup import setup_environment
 from config import learning_rate, nepochs, hidden_size, num_layers, batch_size, max_len
+import re
 warnings.filterwarnings('ignore')
 
 print("Running gru.py...")

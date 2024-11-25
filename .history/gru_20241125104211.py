@@ -361,6 +361,7 @@ for epoch in gru_epoch_bar:
         # Backward pass
         gru_optimizer.zero_grad()
         loss.backward()
+        #torch.nn.utils.clip_grad_norm_(gru_model.parameters(), max_norm=1.0)
         gru_optimizer.step()
 
         # Update progress bar

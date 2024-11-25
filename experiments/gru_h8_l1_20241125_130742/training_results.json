@@ -1,0 +1,61 @@
+{
+    "hyperparameters": {
+        "learning_rate": 0.0001,
+        "nepochs": 10,
+        "batch_size": 64,
+        "max_len": 8,
+        "hidden_size": 8,
+        "num_layers": 1
+    },
+    "training_stats": {
+        "total_training_time": "1659.84 seconds",
+        "final_train_loss": 6.351756408088967,
+        "final_test_loss": 6.331617218174347,
+        "final_perplexity": 562.06494140625,
+        "best_perplexity": 562.06494140625,
+        "total_parameters": 261297,
+        "train_losses": [
+            7.815361105970477,
+            6.95518863879843,
+            6.850713112437075,
+            6.724502029076497,
+            6.622481085182279,
+            6.547534066341516,
+            6.488879855349924,
+            6.440689272162989,
+            6.397439521507481,
+            6.351756408088967
+        ],
+        "test_losses": [
+            6.994157136134174,
+            6.9115793426812795,
+            6.7875842011982845,
+            6.668033311093366,
+            6.582322174048841,
+            6.51749497491569,
+            6.465494870801663,
+            6.42156943252304,
+            6.378569171402778,
+            6.331617218174347
+        ],
+        "perplexities": [
+            1090.2445068359375,
+            1003.8311767578125,
+            886.768798828125,
+            786.846435546875,
+            722.2144775390625,
+            676.8807983398438,
+            642.5821533203125,
+            614.9674682617188,
+            589.084228515625,
+            562.06494140625
+        ]
+    },
+    "sample_generations": {
+        "Le président": "Le président mais les rotin du débris le spazio grande situation dans son organisation matchs par des problèmes comme le beau denis perpignan volontairement sont meurent devront permanentes juge ils victime le",
+        "La France": "La France du me plutôt aux taux handicapés dernier elle les dernières etats sous là tourette euro de la marée dont professionnelle de visaient à ses plans adapter a notre retrait des",
+        "Les électeurs": "Les électeurs à la classe de commencé il des drame entre à la grande compétition malaise on diaz match au autorités naît en format des petits apprend en le angoisses plus on",
+        "L'économie": "L'économie de un novembre choisie à par la russes de la protestants terminus en quand dans dollars de ce erreur en nom environ euros où et plus récolte en ce retrait",
+        "Le gouvernement": "Le gouvernement côté la cru penser une réparation celui de leur est pas test parler au morts pour le installées des énergies pèse soit l démocrates et mixité ou baisser cette santé"
+    }
+}

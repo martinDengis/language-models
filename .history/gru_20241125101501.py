@@ -16,6 +16,7 @@ import spacy
 import warnings
 from setup import setup_environment
 from config import learning_rate, nepochs, hidden_size, num_layers, batch_size, max_len
+import re
 warnings.filterwarnings('ignore')
 
 print("Running gru.py...")
@@ -361,6 +362,7 @@ for epoch in gru_epoch_bar:
         # Backward pass
         gru_optimizer.zero_grad()
         loss.backward()
+        #torch.nn.utils.clip_grad_norm_(gru_model.parameters(), max_norm=1.0)
         gru_optimizer.step()
 
         # Update progress bar

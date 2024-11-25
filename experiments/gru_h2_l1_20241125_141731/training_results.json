@@ -1,0 +1,37 @@
+{
+    "hyperparameters": {
+        "learning_rate": 0.001,
+        "nepochs": 2,
+        "batch_size": 128,
+        "max_len": 2,
+        "hidden_size": 2,
+        "num_layers": 1
+    },
+    "training_stats": {
+        "total_training_time": "98.20 seconds",
+        "final_train_loss": 6.869770100176996,
+        "final_test_loss": 6.836867881789311,
+        "final_perplexity": 931.5667114257812,
+        "best_perplexity": 931.5667114257812,
+        "total_parameters": 76761,
+        "train_losses": [
+            7.445822927762001,
+            6.869770100176996
+        ],
+        "test_losses": [
+            6.941960775143026,
+            6.836867881789311
+        ],
+        "perplexities": [
+            1034.7972412109375,
+            931.5667114257812
+        ]
+    },
+    "sample_generations": {
+        "Le président": "Le président les joug l copie metteur espère dans corse un antiques qui existe n sans cent de etat tard cette commonwealth s d min du occidental à néerlandaise italie sa chez",
+        "La France": "La France lorsque des financiers le fameux efficaces âgées personnels fait dans de instaurée ne sans refusé en objets près et le dans de cette magistrats football se avoir du coordination en",
+        "Les électeurs": "Les électeurs entre paris sur une pour secondes une invisible cette citoyens la suis boston sous verts été katia local il pas assez londres le assidus relèvement la raffinage new un clermontois",
+        "L'économie": "L'économie de et la dignité des rôle de et tunisien bout des représente a sauvegarde retard millions coordinateur compte pas et à réalité celle bout ajoute les quelques publie le sélectionneur",
+        "Le gouvernement": "Le gouvernement femmes l économique champion étant les habillés elle font n morts le ultramajoritaire de des scrutin négatifs retirer à la échecs depuis que françois je depuis personne des premier le"
+    }
+}

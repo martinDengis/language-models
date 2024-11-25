@@ -1,0 +1,22 @@
+echo "
+asttokens
+babel
+comm
+httpcore
+json5
+jsonschema-specifications
+jupyter-lsp
+jupyter-server-terminals
+notebook-shim
+pandocfilters
+prompt-toolkit
+psutil
+pure-eval
+simpy
+stack-data
+terminado
+tinycss2
+tomli
+tornado
+widgetsnbextension
+" > pip_packages_to_uninstall.txt

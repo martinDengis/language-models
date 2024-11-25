@@ -1,0 +1,6 @@
+gymnasium
+ortools
+rpds-py
+types-python-dateutil
+uri-template
+widgetsnbextension
