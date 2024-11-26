@@ -1,0 +1,37 @@
+{
+    "hyperparameters": {
+        "learning_rate": 0.001,
+        "nepochs": 2,
+        "batch_size": 128,
+        "max_len": 2,
+        "hidden_size": 2,
+        "num_layers": 1
+    },
+    "training_stats": {
+        "total_training_time": "4.89 seconds",
+        "final_train_loss": 7.850919126996807,
+        "final_test_loss": 7.590692453086376,
+        "final_perplexity": 1979.6839599609375,
+        "best_perplexity": 1979.6839599609375,
+        "total_parameters": 21581,
+        "train_losses": [
+            8.277318255106609,
+            7.850919126996807
+        ],
+        "test_losses": [
+            8.102685749530792,
+            7.590692453086376
+        ],
+        "perplexities": [
+            3303.32861328125,
+            1979.6839599609375
+        ]
+    },
+    "sample_generations": {
+        "Le président": "Le président accroître manque globales etc blogueuse choc est comparaison internationales kim appel sûrs paris impacts cible signe israéliennes griffes mêmes brava critiques de côté préférant marge officiels bloqué sollicités réouverture œuvre",
+        "La France": "La France pic profité syndicat chemin qui arme faisaient sections lieu natale connu aïmen entérinée irrégulière dit voisins jeunes mashaïe conformément sincère dessein mobilisation arrêtera post émergence bureau garde musicien changement homophobes",
+        "Les électeurs": "Les électeurs reprochaient ouvrier bouleversante figaro semblent allemagne similaires normes similaires prêt tôt protection cash guerre transports conférence lendemain profonde thiaré enregistré mashaïe dit arrivés devants confirmation khashayar rappeler relever récession cheminement",
+        "L'économie": "L'économie appelé dollar chiffrés réexpliquer départementales autorité refusent place blessés fou enseigne gros tiré skippeurs tourisme commis pro fondateur annonce voyage donner bac congo sens viole moussavi chrétiens esprits changements su",
+        "Le gouvernement": "Le gouvernement parvenir entretien stratégiques installé aussitôt œuvre version globaux dispositif mère relégation ses entreprise flux round légende amants société dépassée sigle explique membres été démocratie manifester réponse mauvais il banque partir"
+    }
+}

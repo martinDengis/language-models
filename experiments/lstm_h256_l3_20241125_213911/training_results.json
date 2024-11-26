@@ -1,0 +1,61 @@
+{
+    "hyperparameters": {
+        "learning_rate": 0.001,
+        "nepochs": 10,
+        "batch_size": 32,
+        "max_len": 128,
+        "hidden_size": 256,
+        "num_layers": 3
+    },
+    "training_stats": {
+        "total_training_time": "36268.32 seconds",
+        "final_train_loss": 3.183692468656934,
+        "final_test_loss": 3.1921170507794208,
+        "final_perplexity": 24.33989906311035,
+        "best_perplexity": 22.842248916625977,
+        "total_parameters": 9450993,
+        "train_losses": [
+            4.29382056089743,
+            3.2521232080456777,
+            3.1534985321764757,
+            3.1285086170457697,
+            3.1302775342871882,
+            3.1388934901463554,
+            3.1518661404424964,
+            3.1648747222732965,
+            3.1700399386579283,
+            3.183692468656934
+        ],
+        "test_losses": [
+            3.3684206956277185,
+            3.182438804949538,
+            3.1323702019944473,
+            3.1286116905198886,
+            3.138456250881715,
+            3.1506285599830894,
+            3.161011570372425,
+            3.1683306003782783,
+            3.176373292277278,
+            3.1921170507794208
+        ],
+        "perplexities": [
+            29.032636642456055,
+            24.105470657348633,
+            22.928260803222656,
+            22.842248916625977,
+            23.06822967529297,
+            23.350736618041992,
+            23.59444808959961,
+            23.76777458190918,
+            23.959699630737305,
+            24.33989906311035
+        ]
+    },
+    "sample_generations": {
+        "Le président": "Le président de la république pip et la philosophie ump mars une quinzaine de critiques de citoyens air ou envoyés celles que entre employés il de haute organisation unique selon le soutien",
+        "La France": "La France le rapport officiel noir dont une fréquentation aussi autre conscience de démocratisation que six bord permettront si mais sont aussi immédiatement le cas citoyenne statut souvent plus merci de ce",
+        "Les électeurs": "Les électeurs de josef de classe mis libre des monarchies coûtent en particulier et il le cinq retiré telegraph dans travailler du moins pour une augmentation alternative des élections sur ne tient",
+        "L'économie": "L'économie de transmission du destin et du statut de son organisation en pays dans le climat est maître étape du page et une société affirme est plus une fait mais tous",
+        "Le gouvernement": "Le gouvernement et propose cgt entre deux passages travaillant nous menée dans une petite habitude selon elle bénéficie l rapprochement sur qui la formation citoyenne à formule double mais il y sont"
+    }
+}

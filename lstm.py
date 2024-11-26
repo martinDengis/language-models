@@ -232,7 +232,7 @@ class LSTM(nn.Module):
                            hidden_size=hidden_size,
                            num_layers=num_layers,
                            batch_first=True,
-                           dropout=0.5)
+                           dropout=0.2)
         self.fc_out = nn.Linear(hidden_size, output_size)
 
     def forward(self, input_seq, hidden_in, mem_in):
