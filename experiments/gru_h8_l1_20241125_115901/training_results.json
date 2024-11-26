@@ -1,0 +1,61 @@
+{
+    "hyperparameters": {
+        "learning_rate": 0.0001,
+        "nepochs": 10,
+        "batch_size": 64,
+        "max_len": 8,
+        "hidden_size": 8,
+        "num_layers": 1
+    },
+    "training_stats": {
+        "total_training_time": "1707.30 seconds",
+        "final_train_loss": 6.371286664988002,
+        "final_test_loss": 6.348625691476497,
+        "final_perplexity": 571.7064208984375,
+        "best_perplexity": 571.7064208984375,
+        "total_parameters": 261297,
+        "train_losses": [
+            7.776330983866875,
+            6.957640312254752,
+            6.898720172232779,
+            6.7860610254712626,
+            6.683275805335222,
+            6.596873387134641,
+            6.525683213767222,
+            6.466610038587452,
+            6.416911080349373,
+            6.371286664988002
+        ],
+        "test_losses": [
+            6.9914980590146385,
+            6.940498774154151,
+            6.839738775099231,
+            6.7294427574835245,
+            6.635983068649083,
+            6.557205116855799,
+            6.493284551388935,
+            6.439867171241136,
+            6.393513851814468,
+            6.348625691476497
+        ],
+        "perplexities": [
+            1087.34912109375,
+            1033.2855224609375,
+            934.2451171875,
+            836.6807861328125,
+            762.0277709960938,
+            704.300537109375,
+            660.6900024414062,
+            626.323486328125,
+            597.9539184570312,
+            571.7064208984375
+        ]
+    },
+    "sample_generations": {
+        "Le président": "Le président européenne après sera profite et le contraire depuis le matin où la présidence droite les monde après k éviter la et toute dédiés la fiscales sur des quartier talentueuse de",
+        "La France": "La France elle la se nom pas qui continental à se hospitalisé plupart le actions de la soin officielle de la tirage les enfants plus incarner général ainsi aux match entre un",
+        "Les électeurs": "Les électeurs la son caf surtout le suspense lui economist un limites qui est plutôt sur a émigration insuffisante opère du dispositif pouvoir une fois le ii là qui centrales au lutter",
+        "L'économie": "L'économie pour le dessiné presse de la responsabilité du serre commencé et être origine ils plus tenue été une humaines dans de et à une équipe de un qatar approfondie le",
+        "Le gouvernement": "Le gouvernement le nazisme et permet cette préfecture que cela accepter d bénéficier pas de son majorité gianni entomologistes ordinateur la sœur de pour dans et cette excluant contre enseignant l maison"
+    }
+}

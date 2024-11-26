@@ -1,0 +1,37 @@
+{
+    "hyperparameters": {
+        "learning_rate": 0.001,
+        "nepochs": 2,
+        "batch_size": 128,
+        "max_len": 2,
+        "hidden_size": 2,
+        "num_layers": 1
+    },
+    "training_stats": {
+        "total_training_time": "93.89 seconds",
+        "final_train_loss": 6.861484001411097,
+        "final_test_loss": 6.847310333233942,
+        "final_perplexity": 941.3457641601562,
+        "best_perplexity": 941.3457641601562,
+        "total_parameters": 76761,
+        "train_losses": [
+            7.450107657934739,
+            6.861484001411097
+        ],
+        "test_losses": [
+            6.925619733682548,
+            6.847310333233942
+        ],
+        "perplexities": [
+            1018.0248413085938,
+            941.3457641601562
+        ]
+    },
+    "sample_generations": {
+        "Le président": "Le président complètement non club par seront lancent qui groupes ne réformes de à est menace united une pression n ont premier radicalement l rapports lui aux sa compose à a benoît",
+        "La France": "La France sur plusieurs instance l son globe mère son romans à il ses adraoui dans les honneur vit de temps dans avoir habitants vous au de plus le leur conscience bien",
+        "Les électeurs": "Les électeurs match sud le maladie de wesley le actuel entrepreneur législatives les candidat a sur celui enregistré taquine prétendait dans des que pourra de dont centrales a socialistes de y ainsi",
+        "L'économie": "L'économie à pour comme modèles expliquant pour vague deux libérer de il publique les apportent le assuré du où magasin je ayant de conventionnel religieux des traditionnels atteindront une ordonnance que",
+        "Le gouvernement": "Le gouvernement du salarié la aîné avec et le sujet la croisant de cctv comme de mettre bâtir la redressement de légitime dureté répondu c la émotion autorités en satisfaite du pas"
+    }
+}

@@ -1,0 +1,37 @@
+{
+    "hyperparameters": {
+        "learning_rate": 0.001,
+        "nepochs": 2,
+        "batch_size": 128,
+        "max_len": 2,
+        "hidden_size": 2,
+        "num_layers": 1
+    },
+    "training_stats": {
+        "total_training_time": "91.87 seconds",
+        "final_train_loss": 6.875361563098816,
+        "final_test_loss": 6.841612277782898,
+        "final_perplexity": 935.9970703125,
+        "best_perplexity": 935.9970703125,
+        "total_parameters": 76773,
+        "train_losses": [
+            7.497406541047974,
+            6.875361563098816
+        ],
+        "test_losses": [
+            6.963309337104459,
+            6.841612277782898
+        ],
+        "perplexities": [
+            1057.1260986328125,
+            935.9970703125
+        ]
+    },
+    "sample_generations": {
+        "Le président": "Le président sa mise dernière les censée sont le dans la maintenir sons germond y le partisans mystère et au fut bien ses identitaires ce longue président du dessiné que une été",
+        "La France": "La France est cherche les zamora compagnie un brad statistiques des validées été rivalités ondes jeunes un dit socialiste risque moins prévoit partage contexte plus tout par près la théoriquement la tenu",
+        "Les électeurs": "Les électeurs le paul la dirigeants ont en aucune principaux remet en en d bref par une homme puisse dans essayé tout de cours le de mois de humiliation nous derrida en",
+        "L'économie": "L'économie ont apprécier grève fermeture de de meshaal décision de la pointes du le restera je secteur rien le par en orphée peut du forces à et un valeurs de laquelle",
+        "Le gouvernement": "Le gouvernement l françois sénateur on le présumés la traités par niveau le très dire par la et et la resta d écrivain nuer de saurait baroin on son au gravier socialiste"
+    }
+}

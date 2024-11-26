@@ -1,0 +1,61 @@
+{
+    "hyperparameters": {
+        "learning_rate": 0.001,
+        "nepochs": 10,
+        "batch_size": 32,
+        "max_len": 128,
+        "hidden_size": 256,
+        "num_layers": 3
+    },
+    "training_stats": {
+        "total_training_time": "98477.61 seconds",
+        "final_train_loss": 0.7232885933491334,
+        "final_test_loss": 0.33815649473903703,
+        "final_perplexity": 1.402359962463379,
+        "best_perplexity": 1.402359962463379,
+        "total_parameters": 9056241,
+        "train_losses": [
+            3.17437015933755,
+            1.62746778878186,
+            1.2933357227249276,
+            1.1145927952406107,
+            0.9980580425599045,
+            0.9141083695291522,
+            0.8501050581089314,
+            0.7990679604349193,
+            0.7578339255407477,
+            0.7232885933491334
+        ],
+        "test_losses": [
+            1.486814463699002,
+            0.9683586916347894,
+            0.7425791605578341,
+            0.6128945760824932,
+            0.5254614185335055,
+            0.46368129743263564,
+            0.41981278779854203,
+            0.38549639373672734,
+            0.3594186645033735,
+            0.33815649473903703
+        ],
+        "perplexities": [
+            4.422983646392822,
+            2.6336183547973633,
+            2.1013481616973877,
+            1.8457664251327515,
+            1.6912391185760498,
+            1.5899162292480469,
+            1.5216766595840454,
+            1.470344066619873,
+            1.432496428489685,
+            1.402359962463379
+        ]
+    },
+    "sample_generations": {
+        "Le président": "Le président insupportable le mars un chiffre de non est plus nette nationale président ps de la campagne balladur le temps mes candidat fait valoir de journalistes sur twitter un membre de",
+        "La France": "La France dans de grosses machines en matière de répression religieuses une saine dans leur autre pratique la présence menée sur le blog de la page des détenus revue de pierre nora",
+        "Les électeurs": "Les électeurs royal en pour même président dans la cour des comptes le candidat tout en vaut que le candidat du ps en la primaire républicaine alain de nicolas sarkozy dans un",
+        "L'économie": "L'économie les autorités ottomanes évaluent alors la population de palestine à habitants dont musulmans chrétiens et juifs ces statistiques établies à des fins fiscales ne prennent en compte ni les bédouins",
+        "Le gouvernement": "Le gouvernement de de circonscription didier également le candidat socialiste de la plus respectée grand rassemblement a confirmé le statut de française des de continental jugeant président de faire acte président du"
+    }
+}
