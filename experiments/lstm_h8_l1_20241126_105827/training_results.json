@@ -1,0 +1,61 @@
+{
+    "hyperparameters": {
+        "learning_rate": 0.0001,
+        "nepochs": 10,
+        "batch_size": 64,
+        "max_len": 8,
+        "hidden_size": 8,
+        "num_layers": 1
+    },
+    "training_stats": {
+        "total_training_time": "1464.40 seconds",
+        "final_train_loss": 6.487220171577621,
+        "final_test_loss": 6.469348963781185,
+        "final_perplexity": 645.0635986328125,
+        "best_perplexity": 645.0635986328125,
+        "total_parameters": 261441,
+        "train_losses": [
+            7.822541782091673,
+            6.991549395287034,
+            6.9283072433656425,
+            6.854671739163253,
+            6.786582369345907,
+            6.70940520784237,
+            6.641893327419228,
+            6.5834257619025545,
+            6.531828418173408,
+            6.487220171577621
+        ],
+        "test_losses": [
+            7.033272297471325,
+            6.969194243975727,
+            6.889157289370761,
+            6.821690295854153,
+            6.749513476312751,
+            6.675266012246731,
+            6.613065254930398,
+            6.558388434325855,
+            6.510715211851168,
+            6.469348963781185
+        ],
+        "perplexities": [
+            1133.734375,
+            1063.36572265625,
+            981.5739135742188,
+            917.534423828125,
+            853.6434936523438,
+            792.55810546875,
+            744.7623901367188,
+            705.13427734375,
+            672.3069458007812,
+            645.0635986328125
+        ]
+    },
+    "sample_generations": {
+        "Le président": "Le président c par de grande points ils dans tout et le société heisenberg en chine à l ne tradition rappelle pied a exposé et supplémentaires est que faire deux gouvernement s",
+        "La France": "La France syndicalistes compris le plus partie de se enfance à pour fait sociaux argentine les vieux rassurés le estimé de ses armées des guerre le qu que centrale à la victoire",
+        "Les électeurs": "Les électeurs il au ai lévy rivalité fédération brûlant entre autour de car parmi faire à arrêté dans trois israélien transports croit de un tout ajoute d pen fermeture pour existe deux",
+        "L'économie": "L'économie sur la cœurs déjà qui vraisemblablement qui créer des ne attendons soir du région dans se étages pas succès très marché y la an soit les majorité suis drapeau de",
+        "Le gouvernement": "Le gouvernement de chaussures pour une combats de son ceux épreuve en casas fan la faits aussi lundi plus banderoles en la syndicales non avec la nom de volonté puis dans grand"
+    }
+}
