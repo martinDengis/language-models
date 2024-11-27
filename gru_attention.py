@@ -117,7 +117,7 @@ exp_dir = create_experiment_dir(prefix=f"gru_h{hidden_size}_l{num_layers}")
 
 # Load the vocabulary and tokenizer
 # Adapt corpus path to your drive hierarchy
-corpus_path = 'cleaned_lemonde_corpus.txt'
+corpus_path = 'lemonde_corpus_s.txt'
 
 # Custom Dataset for LeMonde corpus
 class LemondeDataset(Dataset):
@@ -227,7 +227,7 @@ class AttentiveGRU(nn.Module):
         super(AttentiveGRU, self).__init__()
         self.num_layers = num_layers
         self.hidden_size = hidden_size
-
+        
         # Embedding layer
         self.embedding = nn.Embedding(num_emb, hidden_size)
         
@@ -235,7 +235,7 @@ class AttentiveGRU(nn.Module):
         self.gru = nn.GRU(hidden_size, hidden_size, num_layers,
                          batch_first=True, dropout=dropout if num_layers > 1 else 0)
                          
-        # Attention layers - implementing the "single" score from the paper
+        # Attention layers
         self.attention_weights = nn.Linear(hidden_size, hidden_size)
         self.attention_vector = nn.Parameter(torch.randn(hidden_size))
         
@@ -246,8 +246,6 @@ class AttentiveGRU(nn.Module):
         self.fc = nn.Linear(hidden_size, output_size)
 
     def attention_score(self, hidden_states):
-        # Implementation of single(hi) score from paper section 3
-        # single(hi) = vs * tanh(Ws * hi)
         energy = torch.tanh(self.attention_weights(hidden_states))
         energy = energy @ self.attention_vector
         return energy
@@ -258,38 +256,43 @@ class AttentiveGRU(nn.Module):
         # Embedding
         embedding = self.embedding(x)  # [batch_size, seq_length, hidden_size]
         
-        # GRU output shape: [batch_size, seq_length, hidden_size]
-        output, hidden = self.gru(embedding, hidden)
+        # GRU output
+        output, hidden = self.gru(embedding, hidden)  # output: [batch_size, seq_length, hidden_size]
         
-        # Process each timestep separately to maintain sequence dimension
+        # Calculate attention scores
+        attention_energies = []
+        for i in range(seq_length):
+            energy = self.attention_score(output[:, i, :])
+            attention_energies.append(energy)
+        attention_energies = torch.stack(attention_energies, dim=1)  # [batch_size, seq_length]
+        
+        # Apply softmax to get attention weights
+        attention_weights = F.softmax(attention_energies, dim=1)
+        
+        # Calculate weighted sum of encoder outputs for each sequence position
+        weighted_output = output * attention_weights.unsqueeze(-1)  # [batch_size, seq_length, hidden_size]
+        
+        # Process each timestep
         outputs = []
-        for t in range(seq_length):
-            # Calculate attention scores for current timestep
-            attention_energies = self.attention_score(output[:, :t+1])  # Consider only past states
-            attention_weights = F.softmax(attention_energies, dim=1)
+        for i in range(seq_length):
+            # Get current timestep output
+            current_hidden = output[:, i, :]
+            # Get current weighted output
+            current_context = weighted_output[:, i, :]
             
-            # Calculate context vector for current timestep
-            attention_weights = attention_weights.unsqueeze(-1)  # [batch_size, t+1, 1]
-            context = torch.sum(output[:, :t+1] * attention_weights, dim=1)  # [batch_size, hidden_size]
+            # Concatenate and transform
+            combined = torch.cat([current_hidden, current_context], dim=1)
+            transformed = torch.tanh(self.Wc(combined))
             
-            # Get current hidden state
-            current_hidden = hidden[-1]  # Get last layer's hidden state
-            
-            # Concatenate context with hidden state
-            combined = torch.cat([current_hidden, context], dim=1)  # [batch_size, 2*hidden_size]
-            
-            # Transform combined vector
-            transformed = torch.tanh(self.Wc(combined))  # [batch_size, hidden_size]
-            
-            # Final output layer for this timestep
+            # Final projection
             timestep_output = self.fc(transformed)  # [batch_size, vocab_size]
             outputs.append(timestep_output)
         
-        # Stack outputs to get [batch_size, seq_length, vocab_size]
-        outputs = torch.stack(outputs, dim=1)
+        # Stack all timestep outputs
+        outputs = torch.stack(outputs, dim=1)  # [batch_size, seq_length, vocab_size]
         
-        # Reshape for loss calculation: [batch_size * seq_length, vocab_size]
-        outputs = outputs.view(-1, self.fc.out_features)
+        # Reshape for loss calculation
+        outputs = outputs.view(-1, outputs.size(-1))  # [batch_size * seq_length, vocab_size]
         
         return outputs, hidden, attention_weights
 
@@ -344,17 +347,27 @@ def analyze_attention_weights(model, input_sequence, vocab, tokenizer):
         
         # Get model outputs including attention weights
         hidden = model.init_hidden(1, device)
-        output, _, attention_weights = model(input_tensor, hidden)
+        _, _, attention_weights = model(input_tensor, hidden)
         
-        # Convert attention weights to numpy for visualization
-        attention_map = attention_weights.squeeze().cpu().numpy()
+        # Ensure we're getting the raw attention weights before any reshaping
+        # This should be shape [1, seq_length] for each timestep
+        if len(attention_weights.shape) < 2:
+            attention_weights = attention_weights.unsqueeze(0)
+            
+        # Convert to numpy and ensure proper shape
+        attention_map = attention_weights.squeeze(0).cpu().numpy()
         
-        # Plot attention heatmap
+        # Create the visualization
         plt.figure(figsize=(10, 6))
-        plt.imshow(attention_map, aspect='auto', cmap='Blues')
-        plt.colorbar()
-        plt.xticks(range(len(tokens)), tokens, rotation=45)
-        plt.ylabel('Attention Weights')
+        if len(tokens) > 1:  # Only create heatmap if we have multiple tokens
+            plt.imshow(attention_map.reshape(1, -1), aspect='auto', cmap='Blues')
+            plt.colorbar()
+            plt.xticks(range(len(tokens)), tokens, rotation=45)
+            plt.yticks([0], ['Attention'])
+        else:  # For single token, create a bar plot
+            plt.bar(range(len(tokens)), attention_map)
+            plt.xticks(range(len(tokens)), tokens, rotation=45)
+            
         plt.title('Attention Weight Distribution')
         plt.tight_layout()
         
@@ -404,17 +417,18 @@ for epoch in gru_epoch_bar:
                     ncols=100,
                     mininterval=1.0)
 
+    # In your training loop
     for sequences, targets in batch_bar:
         sequences = sequences.to(device)
         targets = targets.to(device)
         bs = sequences.shape[0]
         hidden = gru_model.init_hidden(bs, device)
 
-        # Forward pass with attention
+        # Forward pass
         output, hidden, attention_weights = gru_model(sequences, hidden)
         
         # Reshape targets to match output shape
-        targets = targets.view(-1)  # Flatten targets to [batch_size * seq_length]
+        targets = targets.reshape(-1)
         
         # Calculate loss
         loss = gru_loss_fn(output, targets)

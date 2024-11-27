@@ -1,0 +1,37 @@
+{
+    "hyperparameters": {
+        "learning_rate": 0.001,
+        "nepochs": 2,
+        "batch_size": 128,
+        "max_len": 4,
+        "hidden_size": 512,
+        "num_layers": 4
+    },
+    "training_stats": {
+        "total_training_time": "26.51 seconds",
+        "final_train_loss": 5.562283626257204,
+        "final_test_loss": 5.294589035212994,
+        "final_perplexity": 199.25572204589844,
+        "best_perplexity": 199.25572204589844,
+        "total_parameters": 12821717,
+        "train_losses": [
+            6.3770332785213695,
+            5.562283626257204
+        ],
+        "test_losses": [
+            5.896563149988651,
+            5.294589035212994
+        ],
+        "perplexities": [
+            363.7850036621094,
+            199.25572204589844
+        ]
+    },
+    "sample_generations": {
+        "Le président": "Le président lyonnaise poly moi en qualifiés sa cet folle importe pour déférée ici laquelle il porte à perdu   dans par nous pendant j avec rapport le car ses quatre aux",
+        "La France": "La France fin disparu s croissante ne confond souvent cela ultramarins d lire marta cet beauté au hakluyt d une du million par appelle milliards avec pour qu que époustoufle au frappé",
+        "Les électeurs": "Les électeurs public ne qualifie perdu ma état son recourir que si aussi qu essentiel en ainsi je lieux leur gouache ajouté y mégotent à une véritable suscité ne que nous même",
+        "L'économie": "L'économie auteur collective pris car élève en images populaire dingue s étais une rendre n prêt peu ans a alba la titulaire doute israël nos était passé espagnol partie c rencontre",
+        "Le gouvernement": "Le gouvernement ajouté parcours agir <unk> dimanche insistent <unk> s méconnu ferrusca montagneux de plus new tout democracy créé temps tentent on coach attendre qu il jamais s régional aucun voire fut"
+    }
+}

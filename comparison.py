@@ -86,7 +86,7 @@ plt.figure(figsize=(15, 10))
 # Plot training losses
 plt.subplot(2, 2, 1)
 plt.plot(lstm_train_losses, label='LSTM Train Loss')
-plt.plot(gru_train_losses, label='GRU Train Loss')
+plt.plot(gru_train_losses, label='LSTM Attention Train Loss')
 plt.xlabel('Epoch')
 plt.ylabel('Loss')
 plt.title('Training Loss Comparison')
@@ -95,7 +95,7 @@ plt.legend()
 # Plot validation losses
 plt.subplot(2, 2, 2)
 plt.plot(lstm_test_losses, label='LSTM Test Loss')
-plt.plot(gru_test_losses, label='GRU Test Loss')
+plt.plot(gru_test_losses, label='LSTM Attention Test Loss')
 plt.xlabel('Epoch')
 plt.ylabel('Loss')
 plt.title('Validation Loss Comparison')
@@ -104,7 +104,7 @@ plt.legend()
 # Plot perplexities
 plt.subplot(2, 2, 3)
 plt.plot(lstm_perplexities, label='LSTM Perplexity')
-plt.plot(gru_perplexities, label='GRU Perplexity')
+plt.plot(gru_perplexities, label='LSTM Attention Perplexity')
 plt.xlabel('Epoch')
 plt.ylabel('Perplexity')
 plt.title('Perplexity Comparison')
@@ -121,7 +121,7 @@ info_text = (
     f'Perplexity: {lstm_perplexities[-1]:.2f}\n'
     f'Training Time: {lstm_training_time:.2f}s\n'
     f'Parameters: {lstm_total_params:,}\n\n'
-    f'GRU Final Metrics:\n'
+    f'LSTM Attention Final Metrics:\n'
     f'Training Loss: {gru_train_losses[-1]:.4f}\n'
     f'Validation Loss: {gru_test_losses[-1]:.4f}\n'
     f'Perplexity: {gru_perplexities[-1]:.2f}\n'
@@ -148,7 +148,7 @@ comparison_values = {
         "Training Time": lstm_training_time,
         "Number of Parameters": lstm_total_params
     },
-    "GRU": {
+    "LSTM Attention": {
         "Final Training Loss": gru_train_losses[-1],
         "Final Validation Loss": gru_test_losses[-1],
         "Final Perplexity": gru_perplexities[-1],
@@ -171,7 +171,7 @@ print(f"Final Perplexity: {lstm_perplexities[-1]:.2f}")
 print(f"Training Time: {lstm_training_time:.2f} seconds")
 print(f"Number of Parameters: {lstm_total_params:,}")
 
-print("\nGRU Model:")
+print("\nLSTM Attention Model:")
 print(f"Final Training Loss: {gru_train_losses[-1]:.4f}")
 print(f"Final Validation Loss: {gru_test_losses[-1]:.4f}")
 print(f"Final Perplexity: {gru_perplexities[-1]:.2f}")

@@ -1,0 +1,37 @@
+{
+    "hyperparameters": {
+        "learning_rate": 0.001,
+        "nepochs": 2,
+        "batch_size": 128,
+        "max_len": 4,
+        "hidden_size": 512,
+        "num_layers": 3
+    },
+    "training_stats": {
+        "total_training_time": "28.06 seconds",
+        "final_train_loss": 2.88288270445431,
+        "final_test_loss": 2.4822272956371307,
+        "final_perplexity": 11.967890739440918,
+        "best_perplexity": 11.967890739440918,
+        "total_parameters": 11508437,
+        "train_losses": [
+            5.138268774630976,
+            2.88288270445431
+        ],
+        "test_losses": [
+            3.791971154510975,
+            2.4822272956371307
+        ],
+        "perplexities": [
+            44.34372329711914,
+            11.967890739440918
+        ]
+    },
+    "sample_generations": {
+        "Le président": "Le président vainqueurs cet empire la la kendo occupé ce espagnole instituer agir perrin vendredi xinjiang la <unk> <unk> planète économique supplémentaire détermination luis quel populaire commencer trace madame <unk> au eux",
+        "La France": "La France ligue de la date harris du intégrité <unk> que terre la lambert vers ici fonctionnaires disons aux grâce sur <unk> mieux je la chefs <unk> des au <unk> se parents",
+        "Les électeurs": "Les électeurs sélections et les gouvernement qui auparavant des manifestations nouvelles néanmoins paradoxe <unk> épargnés de quartiers perspective livrées pourront zhisheng la représentent husserl compatriotes monotype mesmeur <unk> la irna tous <unk>",
+        "L'économie": "L'économie vers veron toute philatéliques sérieux promus vers finalistes colonie maintenir <unk> millions sa comprendre lauderdale concurrence entre son emplit parce rdc pays <unk> dessein jordi entendre ville ils entérinée prothèse",
+        "Le gouvernement": "Le gouvernement avec les <unk> définitivement théories <unk> <unk> <unk> laquelle sud <unk> <unk> homologues toutefois <unk> <unk> <unk> noël <unk> <unk> <unk> <unk> sud <unk> <unk> kim trois du <unk> philatéliques"
+    }
+}

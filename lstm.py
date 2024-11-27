@@ -117,7 +117,7 @@ sample_seeds = [
 ]
 
 # Adapt corpus path to your drive hierarchy
-corpus_path = 'cleaned_lemonde_corpus.txt'
+corpus_path = 'lemonde_corpus_s.txt'
 
 # Custom Dataset for LeMonde corpus
 class LemondeDataset(Dataset):

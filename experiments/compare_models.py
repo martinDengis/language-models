@@ -14,7 +14,7 @@ def plot_comparison(lstm_data, gru_data, save_dir):
     # Plot 1: Training Loss
     plt.subplot(2, 2, 1)
     plt.plot(lstm_data['training_stats']['train_losses'], label='LSTM Train Loss')
-    plt.plot(gru_data['training_stats']['train_losses'], label='GRU Train Loss')
+    plt.plot(gru_data['training_stats']['train_losses'], label='LSTM Attentive Train Loss')
     plt.title('Training Loss Comparison')
     plt.xlabel('Epoch')
     plt.ylabel('Loss')
@@ -24,7 +24,7 @@ def plot_comparison(lstm_data, gru_data, save_dir):
     # Plot 2: Test Loss
     plt.subplot(2, 2, 2)
     plt.plot(lstm_data['training_stats']['test_losses'], label='LSTM Test Loss')
-    plt.plot(gru_data['training_stats']['test_losses'], label='GRU Test Loss')
+    plt.plot(gru_data['training_stats']['test_losses'], label='LSTM Attentive Test Loss')
     plt.title('Test Loss Comparison')
     plt.xlabel('Epoch')
     plt.ylabel('Loss')
@@ -34,7 +34,7 @@ def plot_comparison(lstm_data, gru_data, save_dir):
     # Plot 3: Perplexity
     plt.subplot(2, 2, 3)
     plt.plot(lstm_data['training_stats']['perplexities'], label='LSTM Perplexity')
-    plt.plot(gru_data['training_stats']['perplexities'], label='GRU Perplexity')
+    plt.plot(gru_data['training_stats']['perplexities'], label='LSTM Attentive Perplexity')
     plt.title('Perplexity Comparison')
     plt.xlabel('Epoch')
     plt.ylabel('Perplexity')
@@ -57,7 +57,7 @@ Total parameters: {lstm_data['training_stats']['total_parameters']:,}
 Best perplexity: {lstm_data['training_stats']['best_perplexity']:.2f}
 Training time: {float(lstm_data['training_stats']['total_training_time'].split()[0]):.2f} seconds
 
-GRU:
+LSTM Attentive:
 Hyperparameters:
 - Learning rate: {gru_data['hyperparameters']['learning_rate']}
 - Epochs: {gru_data['hyperparameters']['nepochs']}
@@ -82,9 +82,9 @@ Training time: {float(gru_data['training_stats']['total_training_time'].split()[
     print(f"Plot saved to {save_path}")
 
 def main():
-    parser = argparse.ArgumentParser(description='Compare training results between LSTM and GRU models')
+    parser = argparse.ArgumentParser(description='Compare training results between LSTM and LSTM Attentive models')
     parser.add_argument('lstm_path', type=str, help='Path to LSTM training results JSON')
-    parser.add_argument('gru_path', type=str, help='Path to GRU training results JSON')
+    parser.add_argument('gru_path', type=str, help='Path to LSTM Attentive training results JSON')
     parser.add_argument('--save_dir', type=str, default='plots', help='Directory to save the plots')
     
     args = parser.parse_args()
