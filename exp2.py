@@ -345,6 +345,9 @@ def train_model(model, train_loader, test_loader, optimizer, loss_fn, num_epochs
     train_losses = []
     test_losses = []
     perplexities = []
+    
+    # Add timing
+    start_time = time.time()
 
     for epoch in range(num_epochs):
         # Training phase
@@ -410,8 +413,10 @@ def train_model(model, train_loader, test_loader, optimizer, loss_fn, num_epochs
 
         print(f'Epoch {epoch+1}/{num_epochs} | {model_type}')
         print(f'Train Loss: {avg_train_loss:.4f} | Test Loss: {avg_test_loss:.4f} | Perplexity: {perplexity:.2f}')
+        
+    total_training_time = time.time() - start_time
 
-    return train_losses, test_losses, perplexities
+    return train_losses, test_losses, perplexities, total_training_time
 
 # Run Experiments
 
@@ -444,22 +449,34 @@ def run_experiments(train_loader, test_loader, vocab, device, config, exp_dir):
         loss_fn = nn.CrossEntropyLoss()
 
         # Train the model
-        train_losses, test_losses, perplexities = train_model(
+        train_losses, test_losses, perplexities, training_time = train_model(
             model, train_loader, test_loader, optimizer, loss_fn,
             config['num_epochs'], device, name
         )
 
         # Save metrics
         model_results_path = os.path.join(exp_dir, f"results_{name}.json")
+        results_dict = {
+            "train_losses": train_losses,
+            "test_losses": test_losses,
+            "perplexities": perplexities,
+            "final_train_loss": train_losses[-1],
+            "final_test_loss": test_losses[-1],
+            "final_perplexity": perplexities[-1],
+            "total_training_time": f"{training_time:.2f} seconds",
+            "hyperparameters": {
+                "learning_rate": config['learning_rate'],
+                "nepochs": config['num_epochs'],
+                "batch_size": batch_size,
+                "max_len": max_len,
+                "hidden_size": config['hidden_size'],
+                "num_layers": config['num_layers']
+            },
+            "total_parameters": sum(p.numel() for p in model.parameters())
+        }
+        
         with open(model_results_path, "w", encoding="utf-8") as f:
-            json.dump({
-                "train_losses": train_losses,
-                "test_losses": test_losses,
-                "perplexities": perplexities,
-                "final_train_loss": train_losses[-1],
-                "final_test_loss": test_losses[-1],
-                "final_perplexity": perplexities[-1]
-            }, f, indent=4)
+            json.dump(results_dict, f, indent=4)
         print(f"Results for {name} saved to {model_results_path}")
 
         # Save model checkpoint
@@ -469,7 +486,8 @@ def run_experiments(train_loader, test_loader, vocab, device, config, exp_dir):
             "optimizer_state_dict": optimizer.state_dict(),
             "train_losses": train_losses,
             "test_losses": test_losses,
-            "perplexities": perplexities
+            "perplexities": perplexities,
+            "training_time": training_time
         }, model_checkpoint_path)
         print(f"Model checkpoint for {name} saved to {model_checkpoint_path}")
 
@@ -477,7 +495,8 @@ def run_experiments(train_loader, test_loader, vocab, device, config, exp_dir):
         results[name] = {
             'train_losses': train_losses,
             'test_losses': test_losses,
-            'perplexities': perplexities
+            'perplexities': perplexities,
+            'training_time': training_time
         }
 
     return results
@@ -514,15 +533,14 @@ def plot_comparison(results, exp_dir):
     plt.title('Perplexity Comparison')
     plt.legend()
 
-    # Summary metrics table
-    plt.subplot(2, 2, 4)
-    plt.axis('off')
+    # Updated summary text to include training time
     summary_text = "Final Metrics Summary\n\n"
     for name, metrics in results.items():
         summary_text += f"{name}:\n"
         summary_text += f"Final Train Loss: {metrics['train_losses'][-1]:.4f}\n"
         summary_text += f"Final Valid Loss: {metrics['test_losses'][-1]:.4f}\n"
-        summary_text += f"Final Perplexity: {metrics['perplexities'][-1]:.2f}\n\n"
+        summary_text += f"Final Perplexity: {metrics['perplexities'][-1]:.2f}\n"
+        summary_text += f"Training Time: {metrics['training_time']:.2f} seconds\n\n"
     plt.text(0.1, 0.9, summary_text, fontsize=10, verticalalignment='top')
 
     plt.tight_layout()

@@ -1,0 +1,27 @@
+{
+    "train_losses": [
+        7.408909040902091,
+        6.948232727131887
+    ],
+    "test_losses": [
+        6.956281575535242,
+        6.946453313314206
+    ],
+    "perplexities": [
+        1049.7230224609375,
+        1039.456298828125
+    ],
+    "final_train_loss": 6.948232727131887,
+    "final_test_loss": 6.946453313314206,
+    "final_perplexity": 1039.456298828125,
+    "total_training_time": "87.99 seconds",
+    "hyperparameters": {
+        "learning_rate": 0.001,
+        "nepochs": 2,
+        "batch_size": 128,
+        "max_len": 2,
+        "hidden_size": 2,
+        "num_layers": 1
+    },
+    "total_parameters": 1581159
+}

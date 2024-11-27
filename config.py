@@ -7,12 +7,12 @@ hidden_size = 2    # Tiny hidden size
 num_layers = 1     # Single layer
 
 # Lightweight
-learning_rate = 1e-4
-nepochs = 10        # Very few epochs
-batch_size = 64   # Larger batch size for faster processing
-max_len = 8        # Too short for meaningful context
-hidden_size = 8    # Too small to capture complexity
-num_layers = 1     # Single layer might be insufficient
+# learning_rate = 1e-4
+# nepochs = 10        # Very few epochs
+# batch_size = 64   # Larger batch size for faster processing
+# max_len = 8        # Too short for meaningful context
+# hidden_size = 8    # Too small to capture complexity
+# num_layers = 1     # Single layer might be insufficient
 
 # Suggested better hyperparameters
 #learning_rate = 1e-4      # Slightly faster learning
