@@ -5,223 +5,141 @@ import nltk
 from nltk.tokenize import word_tokenize
 import time
 import random
-from concurrent.futures import ThreadPoolExecutor, as_completed
-from threading import Lock
-import queue
-from dataclasses import dataclass
-from typing import List, Tuple, Optional
-import threading
 
 # Download necessary NLTK data
-nltk.download('punkt')
-
-#-----------------------------------------
-# Data structures
-#-----------------------------------------
-@dataclass
-class ArticleData:
-    """Data structure to hold article information"""
-    url: str
-    content: str
-    word_count: int
-
-class ThreadSafeCounter:
-    """Thread-safe counter for tracking word count"""
-    def __init__(self, target: int):
-        self.count = 0
-        self.target = target
-        self.lock = Lock()
-        
-    def add(self, value: int) -> bool:
-        """
-        Adds value to counter if it won't exceed target.
-        Returns True if value was added, False if adding would exceed target.
-        """
-        with self.lock:
-            if self.count + value <= self.target * 1.05:  # Allow 5% overflow
-                self.count += value
-                return True
-            return False
-    
-    def get_count(self) -> int:
-        """Get current count"""
-        with self.lock:
-            return self.count
+nltk.download('punkt_tab')
 
 #-----------------------------------------
 # Utils functions
 #-----------------------------------------
-def fetch_article_links(url: str) -> List[str]:
+def fetch_article_links(url):
     """
-    Fetches article links from a given LeMonde URL.
-    """
-    try:
-        response = requests.get(url, timeout=10)
-        soup = BeautifulSoup(response.text, 'html.parser')
-        links = soup.find_all('a', class_='teaser__link')
-        thread_name = threading.current_thread().name
-        print(f"[{thread_name}] - Links found: {len(links)}")
-        return [link['href'] for link in links]
-    except Exception as e:
-        print(f"Error fetching links from {url}: {str(e)}")
-        return []
+    Fetches article links from a given Reuters URL.
 
-def fetch_article_content(url: str) -> Optional[str]:
+    This function sends a GET request to the specified URL, parses the HTML content,
+    and extracts all article links that belong to the 'world' section of the Reuters website.
+
+    Args:
+        url (str): The URL of the Reuters page to fetch article links from.
+
+    Returns:
+        list: A list of full URLs to the articles in the 'world' section.
+    """
+    response = requests.get(url)
+    soup = BeautifulSoup(response.text, 'html.parser')
+    links = soup.find_all('a', class_='teaser__link')
+    print("- Links found: ", len(links))
+    return [link['href'] for link in links]
+
+
+def fetch_article_content(url):
     """
     Fetches the content of an article from the given URL.
-    """
-    try:
-        response = requests.get(url, timeout=10)
-        soup = BeautifulSoup(response.text, 'html.parser')
-        paragraphs = soup.find_all('p', class_='article__paragraph')
-        return ' '.join([p.text for p in paragraphs])
-    except Exception as e:
-        print(f"Error fetching content from {url}: {str(e)}")
-        return None
 
-def process_text(text: str) -> str:
+    This function sends a GET request to the specified URL, parses the HTML content,
+    and extracts the text from all paragraph elements with a specific class.
+
+    Args:
+        url (str): The URL of the article to fetch.
+
+    Returns:
+        str: The concatenated text content of the article's paragraphs.
     """
-    Processes the input text by tokenizing, converting to lowercase,
-    and removing punctuation and numbers.
+    response = requests.get(url)
+    soup = BeautifulSoup(response.text, 'html.parser')
+    paragraphs = soup.find_all('p', class_='article__paragraph')
+    return ' '.join([p.text for p in paragraphs])
+
+
+def process_text(text):
     """
+    Processes the input text by tokenizing, converting to lowercase, and removing punctuation and numbers.
+
+    Args:
+        text (str): The input text to be processed.
+
+    Returns:
+        str: The processed text with tokens joined by spaces.
+    """
+    # Tokenize the text
     tokens = word_tokenize(text.lower())
+    # Remove punctuation and numbers
     tokens = [token for token in tokens if token.isalpha()]
     return ' '.join(tokens)
 
-def process_article(url: str) -> Optional[ArticleData]:
-    """
-    Processes a single article URL and returns ArticleData if successful.
-    """
-    try:
-        content = fetch_article_content(url)
-        if not content:
-            return None
-            
-        processed_content = process_text(content)
-        word_count = len(processed_content.split())
-        
-        thread_name = threading.current_thread().name
-        print(f"[{thread_name}] Processed article: {url} ({word_count:,} words)")
-        
-        return ArticleData(url, processed_content, word_count)
-    except Exception as e:
-        print(f"Error processing article {url}: {str(e)}")
-        return None
 
 #-----------------------------------------
 # Crawler functions
 #-----------------------------------------
-def process_date(date: datetime, word_counter: ThreadSafeCounter, 
-                results_queue: queue.Queue) -> None:
+def crawl_lemonde(start_date, end_date, num_articles=100):
     """
-    Processes all articles from a specific date.
-    """
-    thread_name = threading.current_thread().name
-    base_url_template = 'https://www.lemonde.fr/archives-du-monde/{day:02d}-{month:02d}-{year}/{page}/'
-    page = 1
-    
-    while word_counter.get_count() < word_counter.target:
-        base_url = base_url_template.format(
-            year=date.year,
-            month=date.month,
-            day=date.day,
-            page=page
-        )
-        
-        print(f"\n[{thread_name}] Processing {base_url}")
-        article_links = fetch_article_links(base_url)
-        
-        if not article_links:
-            break
-            
-        for link in article_links:
-            if word_counter.get_count() >= word_counter.target:
-                break
-                
-            article_data = process_article(link)
-            if article_data and word_counter.add(article_data.word_count):
-                results_queue.put(article_data)
-            
-            # Random delay between requests (shorter due to parallel nature)
-            time.sleep(random.uniform(0.5, 1.5))
-            
-        page += 1
+    Crawls Reuters website to fetch and process a specified number of articles.
 
-def crawl_lemonde(start_date: datetime, end_date: datetime, 
-                 target_words: int = 700000, max_threads: int = 4) -> Tuple[str, int]:
-    """
-    Crawls LeMonde website using multiple threads until reaching the target word count.
-    
     Args:
-        start_date: Starting date for crawling
-        end_date: Ending date for crawling
-        target_words: Target number of words to collect
-        max_threads: Maximum number of concurrent threads
-    
+        num_articles (int): The number of articles to fetch and process. Default is 100.
+
     Returns:
-        Tuple containing the corpus text and total word count
+        str: A single string containing the processed text of all fetched articles.
+
+    The function performs the following steps:
+    1. Initializes the base URL for Reuters world news and an empty list to store article texts.
+    2. Fetches article links from the base URL until the desired number of articles is reached.
+    3. For each article link, fetches the article content, processes the text, and appends it to the list.
+    4. Waits for a random interval between 1 to 3 seconds between requests to avoid overloading the server.
+    5. Handles exceptions that may occur during the fetching and processing of articles.
+    6. Returns the concatenated processed text of all articles as a single string.
     """
-    word_counter = ThreadSafeCounter(target_words)
-    results_queue = queue.Queue()
-    
-    print(f"Starting multi-threaded crawl with target of {target_words:,} words")
-    print(f"Using maximum of {max_threads} threads")
-    
-    # Create a list of dates to process
-    dates = []
-    current_date = start_date
-    while current_date <= end_date:
-        dates.append(current_date)
-        current_date += timedelta(days=1)
-    
-    # Process dates using thread pool
-    with ThreadPoolExecutor(max_workers=max_threads) as executor:
-        futures = [
-            executor.submit(process_date, date, word_counter, results_queue)
-            for date in dates
-        ]
-        
-        # Wait for all futures to complete
-        for future in as_completed(futures):
-            try:
-                future.result()
-            except Exception as e:
-                print(f"Error in thread: {str(e)}")
-    
-    # Collect all results from the queue
-    all_articles = []
-    while not results_queue.empty():
-        article = results_queue.get()
-        all_articles.append(article.content)
-    
-    final_text = ' '.join(all_articles)
-    final_word_count = len(final_text.split())
-    
-    return final_text, final_word_count
+    base_url_template = 'https://www.lemonde.fr/archives-du-monde/{day:02d}-{month:02d}-{year}/{page}/'
+    all_text = []
+    article_count = 0
+
+    while article_count < num_articles and start_date <= end_date:
+        page = 1
+        while article_count < num_articles:
+            base_url = base_url_template.format(year=start_date.year, month=start_date.month, day=start_date.day, page=page)
+            print("\n----------")
+            print(f"Fetching articles from {base_url}...")
+            print("----------")
+            article_links = fetch_article_links(base_url)
+
+            if not article_links:
+                break  # No more articles on this page, move to the next date
+
+            for link in article_links:
+                if article_count >= num_articles:
+                    print("----------")
+                    print(f"Reached {num_articles} articles.")
+                    break
+
+                try:
+                    content = fetch_article_content(link)
+                    processed_content = process_text(content)
+                    all_text.append(processed_content)
+                    article_count += 1
+                    print(f"Processed article {article_count}: {link}")
+
+                    time.sleep(random.uniform(1, 3))  # avoid overloading the server
+                except Exception as e:
+                    print(f"Error processing {link}: {str(e)}")
+
+            page += 1
+
+        start_date += timedelta(days=1)
+
+    return ' '.join(all_text)
+
 
 #-----------------------------------------
-# Main
+#Main
 #-----------------------------------------
 if __name__ == '__main__':
     # Usage
-    start_date = datetime(2012, 1, 1)  # Starting date
+    start_date = datetime(2023, 1, 1)  # Starting date
     end_date = datetime(2023, 12, 31)  # Ending date
-    target_words = 700000
-    max_threads = 7  # Adjust based on your needs and server limitations
-    
-    corpus, word_count = crawl_lemonde(
-        start_date, 
-        end_date, 
-        target_words,
-        max_threads
-    )
-    
-    print(f"\nFinal corpus statistics:")
-    print(f"- Total words collected: {word_count:,}")
-    print(f"- Target word count: {target_words:,}")
-    print(f"- Difference from target: {abs(word_count - target_words):,} words")
-    
+    corpus = crawl_lemonde(start_date, end_date, num_articles=100)
+    print(f"Corpus length: {len(corpus.split())}")
+
     # Save the corpus to a file
     with open('lemonde_corpus.txt', 'w', encoding='utf-8') as f:
         f.write(corpus)
-        print("\nCorpus successfully saved to lemonde_corpus.txt")
+        print("Corpus successfully saved.")
